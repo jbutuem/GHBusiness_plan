@@ -1,0 +1,3591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMER HUT · Plano de Ação Estratégico · TGT 2026</title>
+<meta name="description" content="Análise crítica do business plan + Plano de ação executivo TGT. Maio—Dezembro 2026.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,700;0,800;0,900;1,400;1,700&family=Press+Start+2P&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ==========================================
+     TOKENS — GAMER HUT × TGT
+  ========================================== */
+  :root {
+    /* Paleta GH oficial */
+    --c-black: #000000;
+    --c-jet: #0a0a0a;
+    --c-charcoal: #1a1a1a;
+    --c-graphite: #222;
+    --c-orange: #F26641;
+    --c-orange-deep: #C94F2F;
+    --c-orange-light: #FF8866;
+    --c-mario: #E1251B;
+    --c-skin: #FFC27A;
+    --c-sonic: #194F90;
+    --c-cool: #B1B1B1;
+    --c-cream: #F5F0E8;
+    --c-white: #ffffff;
+
+    /* TGT signature */
+    --c-tgt: #B8232A;
+    --c-tgt-dark: #7A1418;
+
+    /* Status semântico (custom para o plano) */
+    --c-success: #4ade80;
+    --c-warning: #FFC27A;
+    --c-danger: #E1251B;
+    --c-info: #194F90;
+
+    /* Typography */
+    --f-display: 'Russo One', system-ui, sans-serif;
+    --f-body: 'Red Hat Display', system-ui, sans-serif;
+    --f-arcade: 'Press Start 2P', monospace;
+    --f-mono: 'JetBrains Mono', monospace;
+
+    /* Spacing 8px grid */
+    --s-1: 8px;
+    --s-2: 16px;
+    --s-3: 24px;
+    --s-4: 32px;
+    --s-5: 40px;
+    --s-6: 48px;
+    --s-8: 64px;
+    --s-10: 80px;
+    --s-12: 96px;
+    --s-16: 128px;
+
+    /* Layout */
+    --container: 1280px;
+    --hud-h: 64px;
+    --radius: 4px;
+    --border: 1px solid rgba(255,255,255,.12);
+  }
+
+  /* ==========================================
+     RESET
+  ========================================== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: var(--hud-h); }
+  body {
+    font-family: var(--f-body);
+    background: var(--c-black);
+    color: var(--c-white);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+  /* Scrollbar custom */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--c-jet); }
+  ::-webkit-scrollbar-thumb { background: var(--c-orange-deep); border-radius: 0; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--c-orange); }
+
+  /* ==========================================
+     SCANLINES OVERLAY
+  ========================================== */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.012) 0px,
+      rgba(255,255,255,.012) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+    mix-blend-mode: overlay;
+  }
+
+  /* ==========================================
+     HUD NAV
+  ========================================== */
+  .hud {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--hud-h);
+    background: rgba(0,0,0,.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(242,102,65,.2);
+    z-index: 100;
+    display: flex; align-items: center;
+    padding: 0 var(--s-3);
+  }
+  .hud__inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    width: 100%;
+    display: flex; align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+  .hud__logo {
+    font-family: var(--f-display);
+    font-size: 18px;
+    color: var(--c-orange);
+    letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hud__logo::before {
+    content: '◢';
+    color: var(--c-orange);
+    font-size: 14px;
+  }
+  .hud__nav {
+    display: flex; gap: var(--s-3);
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    letter-spacing: .22em;
+  }
+  .hud__nav a {
+    color: var(--c-cool);
+    transition: color .2s;
+    position: relative;
+    padding: 4px 0;
+  }
+  .hud__nav a:hover, .hud__nav a.active { color: var(--c-orange); }
+  .hud__nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; left: 0; right: 0;
+    height: 2px;
+    background: var(--c-orange);
+  }
+  .hud__lifebar {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--f-arcade);
+    font-size: 8px;
+    color: var(--c-cool);
+    letter-spacing: .15em;
+  }
+  .hud__lifebar-track {
+    width: 80px; height: 8px;
+    background: rgba(255,255,255,.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .hud__lifebar-fill {
+    position: absolute; top: 0; left: 0; bottom: 0;
+    width: 100%;
+    background: linear-gradient(90deg, var(--c-orange) 0%, var(--c-skin) 100%);
+    transition: width .3s ease;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .7; }
+  }
+  @media (max-width: 900px) {
+    .hud__nav { display: none; }
+  }
+
+  /* ==========================================
+     CONTAINER
+  ========================================== */
+  .container {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--s-3);
+  }
+  @media (min-width: 768px) {
+    .container { padding: 0 var(--s-5); }
+  }
+
+  /* ==========================================
+     STAGE
+  ========================================== */
+  .stage {
+    padding: var(--s-12) 0;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .stage--hero {
+    min-height: 100vh;
+    padding-top: calc(var(--hud-h) + var(--s-8));
+    display: flex; align-items: center;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(242,102,65,.18) 0%, transparent 60%),
+      var(--c-black);
+    position: relative;
+    overflow: hidden;
+  }
+  .stage--alt { background: var(--c-jet); }
+  .stage__head {
+    margin-bottom: var(--s-8);
+  }
+  .stage__num {
+    font-family: var(--f-arcade);
+    font-size: 10px;
+    color: var(--c-orange);
+    letter-spacing: .3em;
+    margin-bottom: var(--s-2);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .stage__num::before {
+    content: '';
+    width: 32px; height: 2px;
+    background: var(--c-orange);
+  }
+  .stage__title {
+    font-family: var(--f-display);
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--s-2);
+    text-transform: uppercase;
+  }
+  .stage__title em {
+    color: var(--c-orange);
+    font-style: normal;
+  }
+  .stage__sub {
+    font-family: var(--f-body);
+    font-size: 18px;
+    color: var(--c-cool);
+    max-width: 720px;
+    line-height: 1.5;
+  }
+
+  /* ==========================================
+     HERO ESPECÍFICO
+  ========================================== */
+  .hero__brand {
+    font-family: var(--f-arcade);
+    font-size: 10px;
+    color: var(--c-orange);
+    letter-spacing: .3em;
+    margin-bottom: var(--s-4);
+  }
+  .hero__title {
+    font-family: var(--f-display);
+    font-size: clamp(56px, 10vw, 128px);
+    line-height: .9;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: var(--s-3);
+  }
+  .hero__title-line { display: block; color: var(--c-white); }
+  .hero__title-orange { color: var(--c-orange); display: block; }
+  .hero__lead {
+    font-size: 20px;
+    color: var(--c-cool);
+    max-width: 720px;
+    line-height: 1.5;
+    margin-bottom: var(--s-6);
+  }
+  .hero__lead strong {
+    color: var(--c-white);
+    font-weight: 700;
+  }
+  .hero__meta {
+    display: flex; flex-wrap: wrap;
+    gap: var(--s-4);
+    padding-top: var(--s-5);
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+  .hero__meta-item {
+    display: flex; flex-direction: column;
+    gap: 4px;
+    padding-right: var(--s-4);
+    margin-right: var(--s-4);
+    border-right: 1px solid rgba(255,255,255,.1);
+    min-width: 140px;
+  }
+  .hero__meta-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+  .hero__meta-label {
+    font-family: var(--f-arcade);
+    font-size: 8px;
+    color: var(--c-cool);
+    letter-spacing: .22em;
+  }
+  .hero__meta-value {
+    font-family: var(--f-display);
+    font-size: 18px;
+    color: var(--c-orange);
+  }
+  .hero__bg-controle {
+    position: absolute;
+    right: -120px; top: 50%;
+    transform: translateY(-50%);
+    width: 600px; height: 600px;
+    opacity: .04;
+    pointer-events: none;
+  }
+
+  /* ==========================================
+     CARDS
+  ========================================== */
+  .card {
+    background: var(--c-jet);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: var(--s-4);
+    position: relative;
+    transition: border-color .2s, transform .2s;
+  }
+  .card:hover {
+    border-color: rgba(242,102,65,.4);
+  }
+  .card--accent { border-left: 3px solid var(--c-orange); }
+  .card--success { border-left: 3px solid var(--c-success); }
+  .card--warning { border-left: 3px solid var(--c-warning); }
+  .card--danger { border-left: 3px solid var(--c-danger); }
+  .card--info { border-left: 3px solid var(--c-info); }
+
+  .card__eyebrow {
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    color: var(--c-orange);
+    letter-spacing: .22em;
+    margin-bottom: var(--s-2);
+  }
+  .card__title {
+    font-family: var(--f-display);
+    font-size: 22px;
+    line-height: 1.2;
+    margin-bottom: var(--s-2);
+    text-transform: uppercase;
+  }
+  .card__body {
+    color: var(--c-cool);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .card__body p + p { margin-top: var(--s-2); }
+  .card__body strong { color: var(--c-white); font-weight: 600; }
+
+  /* ==========================================
+     GRIDS
+  ========================================== */
+  .grid { display: grid; gap: var(--s-3); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 900px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+  @media (min-width: 901px) and (max-width: 1100px) {
+    .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ==========================================
+     STAT BIG
+  ========================================== */
+  .stat {
+    background: var(--c-jet);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: var(--s-4);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 4px;
+    background: var(--c-orange);
+  }
+  .stat__num {
+    font-family: var(--f-display);
+    font-size: 56px;
+    line-height: 1;
+    color: var(--c-orange);
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .stat__num--small { font-size: 40px; }
+  .stat__num--white { color: var(--c-white); }
+  .stat__label {
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    color: var(--c-cool);
+    letter-spacing: .22em;
+    margin-bottom: var(--s-1);
+  }
+  .stat__sub {
+    font-size: 13px;
+    color: var(--c-cool);
+    line-height: 1.4;
+  }
+
+  /* ==========================================
+     TABELA
+  ========================================== */
+  .table-wrap { overflow-x: auto; }
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .tbl th, .tbl td {
+    padding: var(--s-2) var(--s-3);
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    vertical-align: top;
+  }
+  .tbl thead th {
+    background: var(--c-charcoal);
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    color: var(--c-orange);
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--c-orange);
+  }
+  .tbl tbody tr:hover {
+    background: rgba(242,102,65,.04);
+  }
+  .tbl td strong { color: var(--c-white); font-weight: 700; }
+  .tbl td .mono { font-family: var(--f-mono); font-size: 12px; color: var(--c-skin); }
+
+  /* ==========================================
+     TAGS
+  ========================================== */
+  .tag {
+    display: inline-flex; align-items: center;
+    padding: 4px 10px;
+    font-family: var(--f-arcade);
+    font-size: 8px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .tag--orange { color: var(--c-orange); border-color: var(--c-orange); }
+  .tag--success { color: var(--c-success); border-color: var(--c-success); }
+  .tag--warning { color: var(--c-warning); border-color: var(--c-warning); }
+  .tag--danger { color: var(--c-danger); border-color: var(--c-danger); }
+  .tag--info { color: var(--c-sonic); border-color: var(--c-sonic); background: rgba(25,79,144,.1); }
+  .tag--solid { background: var(--c-orange); color: var(--c-black); border-color: var(--c-orange); }
+
+  /* ==========================================
+     COMPARISON / VS
+  ========================================== */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: var(--s-3);
+    align-items: stretch;
+  }
+  .compare__col {
+    background: var(--c-jet);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: var(--s-4);
+  }
+  .compare__col--before { border-top: 3px solid var(--c-cool); }
+  .compare__col--after { border-top: 3px solid var(--c-orange); }
+  .compare__vs {
+    align-self: center;
+    font-family: var(--f-display);
+    font-size: 24px;
+    color: var(--c-orange);
+    padding: 0 8px;
+  }
+  @media (max-width: 768px) {
+    .compare { grid-template-columns: 1fr; }
+    .compare__vs { padding: 8px 0; text-align: center; }
+  }
+
+  /* ==========================================
+     PILLAR / ROADMAP
+  ========================================== */
+  .pillar {
+    background: var(--c-jet);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: var(--s-4);
+    position: relative;
+    transition: all .2s;
+  }
+  .pillar:hover {
+    border-color: var(--c-orange);
+    background: var(--c-charcoal);
+  }
+  .pillar__num {
+    font-family: var(--f-display);
+    font-size: 64px;
+    line-height: 1;
+    color: var(--c-orange);
+    opacity: .25;
+    position: absolute;
+    top: var(--s-2); right: var(--s-3);
+  }
+  .pillar__icon {
+    width: 48px; height: 48px;
+    border: 2px solid var(--c-orange);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: var(--s-3);
+    color: var(--c-orange);
+  }
+  .pillar__title {
+    font-family: var(--f-display);
+    font-size: 22px;
+    text-transform: uppercase;
+    margin-bottom: var(--s-1);
+    letter-spacing: -0.01em;
+  }
+  .pillar__sub {
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    color: var(--c-orange);
+    letter-spacing: .22em;
+    margin-bottom: var(--s-3);
+  }
+  .pillar__list {
+    list-style: none;
+    color: var(--c-cool);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .pillar__list li {
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(255,255,255,.06);
+    display: flex; gap: 10px;
+  }
+  .pillar__list li::before {
+    content: '◣';
+    color: var(--c-orange);
+    font-size: 10px;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+  .pillar__list li:last-child { border-bottom: none; }
+
+  /* ==========================================
+     QUOTE / CALLOUT
+  ========================================== */
+  .callout {
+    background: linear-gradient(135deg, rgba(242,102,65,.08) 0%, rgba(0,0,0,0) 100%);
+    border-left: 4px solid var(--c-orange);
+    padding: var(--s-4) var(--s-5);
+    margin: var(--s-5) 0;
+    position: relative;
+  }
+  .callout__label {
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    color: var(--c-orange);
+    letter-spacing: .22em;
+    margin-bottom: var(--s-2);
+  }
+  .callout__text {
+    font-family: var(--f-display);
+    font-size: clamp(20px, 2.6vw, 28px);
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+  .callout__text em {
+    color: var(--c-orange);
+    font-style: normal;
+  }
+  .callout__sub {
+    font-family: var(--f-body);
+    color: var(--c-cool);
+    font-size: 14px;
+    margin-top: var(--s-2);
+  }
+
+  .callout--danger { border-color: var(--c-danger); background: linear-gradient(135deg, rgba(225,37,27,.08) 0%, rgba(0,0,0,0) 100%); }
+  .callout--success { border-color: var(--c-success); background: linear-gradient(135deg, rgba(74,222,128,.08) 0%, rgba(0,0,0,0) 100%); }
+  .callout--info { border-color: var(--c-sonic); background: linear-gradient(135deg, rgba(25,79,144,.15) 0%, rgba(0,0,0,0) 100%); }
+
+  /* ==========================================
+     RECALIBRAGEM (KPI antes/depois)
+  ========================================== */
+  .kpi-recal {
+    background: var(--c-jet);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: var(--s-4);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-3);
+  }
+  .kpi-recal__head {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: var(--s-2);
+  }
+  .kpi-recal__title {
+    font-family: var(--f-display);
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+  .kpi-recal__row {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    gap: var(--s-2);
+    align-items: stretch;
+  }
+  .kpi-recal__cell {
+    padding: var(--s-2) var(--s-3);
+    background: rgba(255,255,255,.03);
+    border-left: 3px solid;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .kpi-recal__cell--before { border-color: var(--c-cool); }
+  .kpi-recal__cell--after { border-color: var(--c-success); background: rgba(74,222,128,.05); }
+  .kpi-recal__cell-label {
+    font-family: var(--f-arcade);
+    font-size: 8px;
+    color: var(--c-cool);
+    letter-spacing: .2em;
+    margin-bottom: 4px;
+  }
+  .kpi-recal__cell-val {
+    font-family: var(--f-display);
+    font-size: 22px;
+    color: var(--c-white);
+    line-height: 1;
+  }
+  .kpi-recal__cell--after .kpi-recal__cell-val { color: var(--c-success); }
+  .kpi-recal__arrow {
+    align-self: center;
+    text-align: center;
+    color: var(--c-orange);
+    font-family: var(--f-display);
+    font-size: 24px;
+  }
+  .kpi-recal__rationale {
+    font-size: 13px;
+    color: var(--c-cool);
+    line-height: 1.5;
+    padding: var(--s-2);
+    background: rgba(0,0,0,.3);
+    border-left: 2px solid var(--c-orange);
+  }
+  .kpi-recal__rationale strong { color: var(--c-skin); }
+  @media (max-width: 700px) {
+    .kpi-recal__row { grid-template-columns: 1fr; }
+    .kpi-recal__arrow { display: none; }
+  }
+
+  /* ==========================================
+     TIMELINE / FLUXO
+  ========================================== */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    position: relative;
+  }
+  .flow__step {
+    background: var(--c-jet);
+    border: 1px solid rgba(255,255,255,.08);
+    border-top: 3px solid var(--c-orange);
+    padding: var(--s-3);
+    position: relative;
+  }
+  .flow__day {
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    color: var(--c-orange);
+    letter-spacing: .22em;
+    margin-bottom: var(--s-2);
+  }
+  .flow__title {
+    font-family: var(--f-display);
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: var(--s-1);
+  }
+  .flow__desc {
+    font-size: 12px;
+    color: var(--c-cool);
+    line-height: 1.5;
+  }
+  @media (max-width: 900px) {
+    .flow { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 500px) {
+    .flow { grid-template-columns: 1fr; }
+  }
+
+  /* ==========================================
+     TIME / HORAS
+  ========================================== */
+  .team-bar {
+    display: flex; align-items: center;
+    gap: var(--s-2);
+    margin-bottom: var(--s-2);
+  }
+  .team-bar__label {
+    flex: 0 0 200px;
+    font-family: var(--f-body);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .team-bar__role {
+    color: var(--c-cool);
+    font-weight: 400;
+    font-size: 12px;
+    display: block;
+  }
+  .team-bar__track {
+    flex: 1;
+    height: 28px;
+    background: rgba(255,255,255,.04);
+    position: relative;
+    overflow: hidden;
+  }
+  .team-bar__fill {
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    background: var(--c-orange);
+    display: flex; align-items: center;
+    padding: 0 12px;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-black);
+    transition: width .8s ease-out;
+  }
+  .team-bar__fill--current { background: rgba(177,177,177,.5); color: var(--c-white); }
+  .team-bar__delta {
+    flex: 0 0 60px;
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--c-success);
+    text-align: right;
+    font-weight: 700;
+  }
+  .team-bar__delta--new {
+    color: var(--c-orange);
+  }
+  @media (max-width: 700px) {
+    .team-bar { flex-wrap: wrap; }
+    .team-bar__label { flex: 1 1 100%; }
+    .team-bar__delta { flex: 1 1 100%; text-align: left; }
+  }
+
+  /* ==========================================
+     PRICING / FATURAMENTO
+  ========================================== */
+  .price-card {
+    background: var(--c-jet);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: var(--s-5);
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card--featured {
+    border: 2px solid var(--c-orange);
+    background: linear-gradient(180deg, rgba(242,102,65,.06) 0%, var(--c-jet) 100%);
+  }
+  .price-card__badge {
+    position: absolute;
+    top: var(--s-3); right: var(--s-3);
+    background: var(--c-orange);
+    color: var(--c-black);
+    padding: 4px 10px;
+    font-family: var(--f-arcade);
+    font-size: 8px;
+    letter-spacing: .22em;
+  }
+  .price-card__label {
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    color: var(--c-orange);
+    letter-spacing: .22em;
+    margin-bottom: var(--s-2);
+  }
+  .price-card__title {
+    font-family: var(--f-display);
+    font-size: 28px;
+    text-transform: uppercase;
+    margin-bottom: var(--s-2);
+  }
+  .price-card__num {
+    font-family: var(--f-display);
+    font-size: 56px;
+    color: var(--c-orange);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .price-card__num small {
+    font-size: 18px;
+    color: var(--c-cool);
+    margin-left: 4px;
+  }
+  .price-card__line {
+    color: var(--c-cool);
+    font-size: 14px;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(255,255,255,.06);
+  }
+  .price-card__line:last-child { border-bottom: none; }
+  .price-card__line strong { color: var(--c-white); }
+
+  /* ==========================================
+     CHECK / X LIST
+  ========================================== */
+  .checklist { list-style: none; }
+  .checklist li {
+    padding: 10px 0 10px 30px;
+    border-bottom: 1px dashed rgba(255,255,255,.08);
+    position: relative;
+    color: var(--c-cool);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .checklist li::before {
+    position: absolute;
+    left: 0; top: 10px;
+    font-family: var(--f-display);
+    font-size: 14px;
+    width: 20px;
+  }
+  .checklist--ok li::before { content: '✓'; color: var(--c-success); }
+  .checklist--no li::before { content: '✗'; color: var(--c-danger); }
+  .checklist--warn li::before { content: '!'; color: var(--c-warning); }
+  .checklist li strong { color: var(--c-white); }
+
+  /* ==========================================
+     FOOTER
+  ========================================== */
+  .footer {
+    background: var(--c-black);
+    padding: var(--s-10) 0 var(--s-5);
+    border-top: 2px solid var(--c-orange);
+  }
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--s-5);
+    margin-bottom: var(--s-6);
+  }
+  .footer__title {
+    font-family: var(--f-display);
+    font-size: 32px;
+    text-transform: uppercase;
+    margin-bottom: var(--s-2);
+  }
+  .footer__title em {
+    color: var(--c-orange);
+    font-style: normal;
+  }
+  .footer__lead {
+    color: var(--c-cool);
+    max-width: 400px;
+  }
+  .footer__col-title {
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    color: var(--c-orange);
+    letter-spacing: .22em;
+    margin-bottom: var(--s-2);
+  }
+  .footer__list {
+    list-style: none;
+    color: var(--c-cool);
+    font-size: 13px;
+    line-height: 2;
+  }
+  .footer__bottom {
+    padding-top: var(--s-4);
+    border-top: 1px solid rgba(255,255,255,.08);
+    display: flex; justify-content: space-between;
+    flex-wrap: wrap; gap: var(--s-2);
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--c-cool);
+  }
+  .footer__tgt {
+    color: var(--c-tgt);
+    font-weight: 700;
+    font-family: var(--f-display);
+    letter-spacing: .05em;
+  }
+  @media (max-width: 800px) {
+    .footer__inner { grid-template-columns: 1fr; }
+  }
+
+  /* ==========================================
+     UTILS
+  ========================================== */
+  .mt-1 { margin-top: var(--s-2); }
+  .mt-2 { margin-top: var(--s-3); }
+  .mt-3 { margin-top: var(--s-4); }
+  .mt-4 { margin-top: var(--s-5); }
+  .mt-5 { margin-top: var(--s-6); }
+  .mb-3 { margin-bottom: var(--s-4); }
+  .mb-4 { margin-bottom: var(--s-5); }
+  .text-center { text-align: center; }
+  .text-orange { color: var(--c-orange); }
+  .text-cool { color: var(--c-cool); }
+  .text-success { color: var(--c-success); }
+  .text-danger { color: var(--c-danger); }
+  .text-skin { color: var(--c-skin); }
+  .mono { font-family: var(--f-mono); }
+  .arcade { font-family: var(--f-arcade); letter-spacing: .22em; }
+  .small { font-size: 13px; }
+
+  /* ==========================================
+     PILL (sub-categoria)
+  ========================================== */
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s-1); }
+  .pill {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    background: rgba(242,102,65,.1);
+    color: var(--c-orange);
+    border: 1px solid rgba(242,102,65,.3);
+  }
+
+  /* ==========================================
+     DELIVERABLE BLOCK
+  ========================================== */
+  .deliv {
+    background: var(--c-charcoal);
+    padding: var(--s-3);
+    border-left: 3px solid var(--c-orange);
+  }
+  .deliv__title {
+    font-family: var(--f-display);
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .deliv__list {
+    list-style: none;
+    font-size: 13px;
+    color: var(--c-cool);
+    line-height: 1.7;
+  }
+  .deliv__list li::before {
+    content: '◢ ';
+    color: var(--c-orange);
+    font-size: 9px;
+  }
+
+  /* ==========================================
+     QUARTER ROADMAP (timeline horizontal)
+  ========================================== */
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    position: relative;
+    overflow-x: auto;
+  }
+  .roadmap__col {
+    background: var(--c-jet);
+    border-top: 3px solid var(--c-orange);
+    padding: var(--s-3);
+    min-width: 220px;
+  }
+  .roadmap__col:nth-child(1) { border-color: var(--c-skin); }
+  .roadmap__col:nth-child(2) { border-color: var(--c-orange); }
+  .roadmap__col:nth-child(3) { border-color: var(--c-mario); }
+  .roadmap__col:nth-child(4) { border-color: var(--c-orange-deep); }
+  .roadmap__period {
+    font-family: var(--f-arcade);
+    font-size: 10px;
+    color: var(--c-orange);
+    letter-spacing: .22em;
+    margin-bottom: 4px;
+  }
+  .roadmap__title {
+    font-family: var(--f-display);
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-bottom: var(--s-2);
+    line-height: 1.1;
+  }
+  .roadmap__list {
+    list-style: none;
+    font-size: 12px;
+    color: var(--c-cool);
+    line-height: 1.7;
+  }
+  .roadmap__list li {
+    padding: 4px 0;
+    border-bottom: 1px dashed rgba(255,255,255,.06);
+  }
+  .roadmap__list li::before {
+    content: '▸ ';
+    color: var(--c-orange);
+    font-size: 10px;
+  }
+  @media (max-width: 900px) {
+    .roadmap { grid-template-columns: 1fr; }
+  }
+
+  /* ==========================================
+     CONSULTANT TONE — Análise em parceria
+  ========================================== */
+  .consultant-block {
+    background: linear-gradient(135deg, rgba(25,79,144,.08) 0%, var(--c-jet) 80%);
+    border: 1px solid rgba(25,79,144,.3);
+    padding: var(--s-4);
+    margin-top: var(--s-3);
+  }
+  .consultant-block__head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: var(--s-2);
+  }
+  .consultant-block__icon {
+    width: 32px; height: 32px;
+    border: 1px solid var(--c-sonic);
+    color: var(--c-sonic);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--f-display);
+    font-size: 14px;
+  }
+  .consultant-block__label {
+    font-family: var(--f-arcade);
+    font-size: 9px;
+    color: var(--c-sonic);
+    letter-spacing: .22em;
+  }
+
+  /* ==========================================
+     PRINT
+  ========================================== */
+  @media print {
+    .hud { display: none; }
+    body { background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+<!-- LOCK SCREEN · GH2026@ -->
+<style id="lockScreenStyles">
+  #lockScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: radial-gradient(ellipse at 50% 30%, rgba(242,102,65,.12) 0%, transparent 60%), #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: 'Red Hat Display', system-ui, sans-serif;
+  }
+  #lockScreen::before {
+    content: '';
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0px, rgba(255,255,255,.015) 1px, transparent 1px, transparent 4px);
+    mix-blend-mode: overlay;
+  }
+  #lockScreen.hidden { display: none !important; }
+  .lock-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 32px;
+    background: #0a0a0a;
+    border: 1px solid rgba(242,102,65,.2);
+    box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(242,102,65,.05);
+    position: relative;
+    z-index: 1;
+  }
+  .lock-card__brand {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #F26641;
+    letter-spacing: .3em;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .lock-card__brand::before {
+    content: '';
+    width: 32px;
+    height: 2px;
+    background: #F26641;
+  }
+  .lock-card__title {
+    font-family: 'Russo One', system-ui, sans-serif;
+    font-size: 36px;
+    line-height: .95;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .lock-card__title em { color: #F26641; font-style: normal; }
+  .lock-card__sub {
+    color: #B1B1B1;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+  .lock-card__sub strong { color: #fff; }
+  .lock-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .lock-card__input {
+    flex: 1;
+    padding: 14px 16px;
+    background: #000;
+    border: 1px solid rgba(255,255,255,.15);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    letter-spacing: .1em;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .lock-card__input:focus {
+    border-color: #F26641;
+    box-shadow: 0 0 0 1px rgba(242,102,65,.2);
+  }
+  .lock-card__btn {
+    padding: 14px 22px;
+    background: #F26641;
+    border: none;
+    color: #000;
+    font-family: 'Russo One', system-ui, sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    cursor: pointer;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .lock-card__btn:hover {
+    transform: translateY(-1px);
+    background: #FF8866;
+    box-shadow: 0 4px 12px rgba(242,102,65,.4);
+  }
+  .lock-card__btn:active { transform: translateY(0); }
+  .lock-card__error {
+    color: #E1251B;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    letter-spacing: .15em;
+    margin-top: 4px;
+    min-height: 14px;
+  }
+  .lock-card__error.shake {
+    animation: lockShake .4s ease;
+  }
+  @keyframes lockShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-3px); }
+  }
+  .lock-card__hint {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px dashed rgba(255,255,255,.1);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #B1B1B1;
+    line-height: 1.5;
+  }
+  .lock-card__hint strong { color: #FFC27A; }
+</style>
+
+<div id="lockScreen">
+  <div class="lock-card">
+    <div class="lock-card__brand">GAMER HUT × TGT</div>
+    <h1 class="lock-card__title">PLANO DE <em>AÇÃO 2026</em></h1>
+    <p class="lock-card__sub">
+      Material confidencial. <strong>Insira a senha</strong> compartilhada pela TGT Strategy MKT para acessar.
+    </p>
+    <div class="lock-input-row">
+      <input type="password" id="lockPass" class="lock-card__input" placeholder="Senha" autocomplete="off" autofocus />
+      <button id="lockBtn" class="lock-card__btn">Press Start ↳</button>
+    </div>
+    <div id="lockError" class="lock-card__error">&nbsp;</div>
+    <div class="lock-card__hint">
+      Dúvidas? Fale com a equipe TGT que apresentou este material.
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var PASS = 'GH2026@';
+  var STORAGE_KEY = 'gh2026_unlocked';
+  var lock = document.getElementById('lockScreen');
+  var input = document.getElementById('lockPass');
+  var btn = document.getElementById('lockBtn');
+  var err = document.getElementById('lockError');
+
+  function unlock() {
+    lock.classList.add('hidden');
+    try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch(e) {}
+  }
+  function tryUnlock() {
+    if (input.value === PASS) {
+      unlock();
+    } else {
+      err.textContent = '◢ SENHA INCORRETA · TENTE NOVAMENTE';
+      err.classList.remove('shake');
+      void err.offsetWidth;
+      err.classList.add('shake');
+      input.value = '';
+      input.focus();
+    }
+  }
+  btn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') tryUnlock();
+  });
+  // Persistir desbloqueio na sessão
+  try {
+    if (sessionStorage.getItem(STORAGE_KEY) === '1') unlock();
+  } catch(e) {}
+})();
+</script>
+<!-- /LOCK SCREEN -->
+
+
+<!-- HUD NAV -->
+<nav class="hud">
+  <div class="hud__inner">
+    <div class="hud__logo">PLANO DE AÇÃO · GH × TGT</div>
+    <div class="hud__nav">
+      <a href="#diag" data-stage="diag">DIAG</a>
+      <a href="#analise">CALIBRAÇÃO</a>
+      <a href="#recal">TESE</a>
+      <a href="#plano">PLANO</a>
+      <a href="#hub">HUB</a>
+      <a href="#time">TIME</a>
+      <a href="#genz">GEN Z</a>
+      <a href="#entregas">ENTREGAS</a>
+      <a href="#fee">FEE</a>
+      <a href="#roadmap">ROAD</a>
+    </div>
+    <div class="hud__lifebar">
+      <span>EXEC</span>
+      <div class="hud__lifebar-track">
+        <div class="hud__lifebar-fill"></div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="stage stage--hero">
+  <svg class="hero__bg-controle" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 70 Q50 60 60 60 L140 60 Q150 60 150 70 L165 130 Q165 145 150 145 Q140 145 132 135 L120 120 L80 120 L68 135 Q60 145 50 145 Q35 145 35 130 Z" fill="none" stroke="#F26641" stroke-width="2"/>
+    <circle cx="80" cy="90" r="4" fill="#F26641"/>
+    <circle cx="120" cy="90" r="4" fill="#F26641"/>
+    <rect x="92" y="86" width="16" height="8" fill="#F26641"/>
+    <rect x="96" y="82" width="8" height="16" fill="#F26641"/>
+  </svg>
+  <div class="container" style="position: relative; z-index: 2;">
+    <div class="hero__brand">◢ TGT STRATEGY MKT × GAMER HUT · MAIO 2026</div>
+    <h1 class="hero__title">
+      <span class="hero__title-line">PLANO DE</span>
+      <span class="hero__title-orange">AÇÃO 2026</span>
+    </h1>
+    <p class="hero__lead">
+      Análise crítica do Business Plan + recalibragem de KPIs <strong>com dados auditados</strong> + modelo
+      operacional <strong>HUB</strong> da agência.
+      Mantendo as bases consolidadas no plano original, ajustando KPIs para que sejam <strong>tangíveis</strong>,
+      e estruturando a execução com a metodologia TGT.
+    </p>
+    <div class="hero__meta">
+      <div class="hero__meta-item">
+        <span class="hero__meta-label">Período</span>
+        <span class="hero__meta-value">MAI · DEZ 2026</span>
+      </div>
+      <div class="hero__meta-item">
+        <span class="hero__meta-label">Horizonte M&amp;A</span>
+        <span class="hero__meta-value">VENDA EM 2030</span>
+      </div>
+      <div class="hero__meta-item">
+        <span class="hero__meta-label">Documento</span>
+        <span class="hero__meta-value">v.2026.05.08 · AUDITADO</span>
+      </div>
+      <div class="hero__meta-item">
+        <span class="hero__meta-label">Confidencial</span>
+        <span class="hero__meta-value">GH × TGT</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 01 — DIAGNÓSTICO
+========================================= -->
+<section class="stage" id="diag">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 01 · DIAGNÓSTICO</div>
+      <h2 class="stage__title">OS DESAFIOS, <em>EM ORDEM</em></h2>
+      <p class="stage__sub">
+        Antes de propor qualquer ação, a gente coloca os fatos na mesa.
+        7 frentes extraídas do plano elaborado pelo cliente + briefing direto. Cada uma com peso real
+        para a tese de venda em 2030.
+      </p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card card--danger">
+        <div class="card__eyebrow">DESAFIO 01 · ESTRATÉGICO</div>
+        <h3 class="card__title">M&amp;A em 2030</h3>
+        <p class="card__body">
+          Cliente quer vender a empresa até 2030.
+          <strong>Tradução prática:</strong> o que vai mover o ponteiro de valuation
+          é EBITDA recorrente + diversificação de canal + contratos de longo prazo (publishers).
+          Métrica de seguidor é vaidade — comprador olha receita, margem e moat competitivo.
+        </p>
+      </div>
+
+      <div class="card card--warning">
+        <div class="card__eyebrow">DESAFIO 02 · CONCENTRAÇÃO</div>
+        <h3 class="card__title">86% via marketplace</h3>
+        <p class="card__body">
+          Risco crítico de concentração. Marketplace dita a margem, a regra e pode revogar a presença.
+          <strong>Meta original:</strong> 25% via loja própria. <strong>Régua TGT 8m:</strong> chegar em 14–15% até dez/26.
+          Esse é o KPI mais importante para o exit.
+        </p>
+      </div>
+
+      <div class="card card--info">
+        <div class="card__eyebrow">DESAFIO 03 · COMUNICAÇÃO</div>
+        <h3 class="card__title">Evolução do feed</h3>
+        <p class="card__body">
+          O feed atual cumpriu seu papel até aqui — sustentou o crescimento de <strong>36K → 101K em 12 meses</strong>
+          e gerou <strong>+641% de engajamento</strong> no último trimestre auditado.
+          O ciclo agora pede uma camada editorial mais madura.
+          <strong>Status TGT:</strong> brandbook v.2026.07 + pilares editoriais (Drop · Review · Tip · Lore · Resumo)
+          já desenhados, com piloto pronto para entrar.
+        </p>
+      </div>
+
+      <div class="card card--info">
+        <div class="card__eyebrow">DESAFIO 04 · CRESCIMENTO</div>
+        <h3 class="card__title">IG: 36K → 101K em 1 ano</h3>
+        <p class="card__body">
+          Cliente acha pouco. <strong>Calibração mostra:</strong> +19.114 followers só no último trimestre,
+          com CPF efetivo de <strong>R$ 0,70/follower</strong> — bem abaixo da média do varejo brasileiro.
+          O ponto agora não é volume, é <strong>qualidade da audiência e taxa de conversão</strong>
+          de awareness em compra direta.
+        </p>
+      </div>
+
+      <div class="card card--info">
+        <div class="card__eyebrow">DESAFIO 05 · NARRATIVA</div>
+        <h3 class="card__title">Submarca Game Shack</h3>
+        <p class="card__body">
+          Cliente quer separar venda de comunidade — concordamos. <strong>Hoje a TGT atende só Store</strong>
+          (~125h/mês cobrindo todas as frentes). Shack é projeto novo: requer videomaker dedicado
+          para Fluffy &amp; Grumpy virarem produção contínua. Sem isso, vira PowerPoint bonito.
+        </p>
+      </div>
+
+      <div class="card card--accent">
+        <div class="card__eyebrow">DESAFIO 06 · RECEITA B2B</div>
+        <h3 class="card__title">0 contratos com publisher</h3>
+        <p class="card__body">
+          Maior canal de mídia física do BR e ainda sem co-marketing estruturado.
+          Oportunidade clara — porém ciclo B2B publisher = 3–6 meses.
+          <strong>Meta original:</strong> R$ 30K/mês até OUT. <strong>Régua TGT:</strong> 1–2 BRONZE até OUT, 3–4 até DEZ.
+        </p>
+      </div>
+
+      <div class="card card--danger">
+        <div class="card__eyebrow">DESAFIO 07 · OPERACIONAL</div>
+        <h3 class="card__title">Demandas em cima da hora</h3>
+        <p class="card__body">
+          Perfil do cliente: trazer pautas e oportunidades fora do ciclo planejado.
+          <strong>Hoje a agência absorve no susto e a qualidade cai.</strong>
+          Solução no Plano TGT: fluxo HUB com trilha extraordinária + capacity reservada.
+        </p>
+      </div>
+    </div>
+
+    <!-- BLOCO ESPECIAL: Canal próprio depende do cliente -->
+    <div style="margin-top: var(--s-6); background: var(--c-jet); border: 1px solid rgba(225,37,27,.4); padding: var(--s-5); border-left: 4px solid var(--c-mario);">
+      <div class="arcade text-orange" style="font-size: 10px; margin-bottom: var(--s-2); color: var(--c-mario);">
+        ◢ RESSALVA ESTRATÉGICA · DESAFIO 02 (LOJA PRÓPRIA)
+      </div>
+      <h3 style="font-family: var(--f-display); font-size: 32px; text-transform: uppercase; line-height: 1.1; margin-bottom: var(--s-3); letter-spacing: -0.01em;">
+        MARKETING <em style="color: var(--c-orange); font-style: normal;">PUXA</em> — PRODUTO TEM QUE <em style="color: var(--c-orange); font-style: normal;">SUSTENTAR</em>
+      </h3>
+      <p style="color: var(--c-cool); font-size: 16px; max-width: 760px; line-height: 1.6; margin-bottom: var(--s-4);">
+        Reduzir os 86% de marketplace e levar a operação para 14–15% via loja própria é
+        <strong style="color: var(--c-white);">o KPI mais relevante para o exit em 2030</strong>. A TGT entrega tráfego, conteúdo,
+        rastreabilidade e conversão. Mas há duas variáveis que <strong style="color: var(--c-skin);">dependem da Gamer Hut</strong>
+        — sem elas, o tráfego trazido não converte e a meta não se cumpre.
+      </p>
+      <div class="grid grid-2" style="margin-top: var(--s-3);">
+        <div style="background: rgba(225,37,27,.05); padding: var(--s-3); border-left: 3px solid var(--c-mario);">
+          <div class="arcade text-orange" style="font-size: 9px; margin-bottom: 8px;">VARIÁVEL DO CLIENTE · 01</div>
+          <h4 style="font-family: var(--f-display); font-size: 20px; text-transform: uppercase; margin-bottom: var(--s-2);">Plataforma de e-commerce</h4>
+          <p style="color: var(--c-cool); font-size: 14px; line-height: 1.6;">
+            A loja própria hoje roda na <strong style="color: var(--c-white);">Loja Integrada</strong>, que é uma plataforma
+            de entrada — limitada em personalização, integrações, performance, SEO técnico, recursos
+            de fidelidade e tracking avançado.
+            <br><br>
+            <strong style="color: var(--c-skin);">Para chegar em 14–15% de share via loja própria, é preciso migrar</strong>
+            para uma plataforma mais robusta (Tray, Shopify, VTEX, Magento, ou similar) — com mais flexibilidade
+            de UX, checkout otimizado, integração com mídia paga e dashboards analíticos.
+          </p>
+        </div>
+        <div style="background: rgba(225,37,27,.05); padding: var(--s-3); border-left: 3px solid var(--c-mario);">
+          <div class="arcade text-orange" style="font-size: 9px; margin-bottom: 8px;">VARIÁVEL DO CLIENTE · 02</div>
+          <h4 style="font-family: var(--f-display); font-size: 20px; text-transform: uppercase; margin-bottom: var(--s-2);">Logística &amp; Operação</h4>
+          <p style="color: var(--c-cool); font-size: 14px; line-height: 1.6;">
+            Vender direto exige <strong style="color: var(--c-white);">SLA de envio competitivo</strong> com o que
+            o marketplace oferece (frete grátis, entrega rápida, política de troca clara, atendimento ágil).
+            <br><br>
+            <strong style="color: var(--c-skin);">Sem investimento em logística, embalagem, contrato com transportadora
+            e SAC dedicado</strong>, o consumidor que vier do Instagram para o site vai comparar com Mercado Livre /
+            Amazon e voltar. Marketing trouxe — operação tem que segurar.
+          </p>
+        </div>
+      </div>
+      <p style="color: var(--c-cool); font-size: 14px; line-height: 1.6; margin-top: var(--s-3); padding-top: var(--s-3); border-top: 1px solid rgba(255,255,255,.1);">
+        <strong style="color: var(--c-orange);">Recomendação TGT:</strong> tratar plataforma e logística como
+        <strong style="color: var(--c-white);">workstream paralelo</strong> ao marketing — não como pré-requisito bloqueador
+        (senão trava tudo), mas como projeto com cronograma próprio que precisa estar em pé até Q4 para a meta de
+        loja própria virar realidade. Podemos apoiar com discovery de plataforma + RFP curado se for útil.
+      </p>
+    </div>
+
+    <div class="callout callout--info" style="margin-top: var(--s-6);">
+      <div class="callout__label">SÍNTESE DO DIAGNÓSTICO</div>
+      <div class="callout__text">
+        VENDA EM 2030 NÃO SE FAZ COM <em>SEGUIDOR</em>. SE FAZ COM
+        <em>EBITDA, CONTRATO E MOAT.</em>
+      </div>
+      <div class="callout__sub">
+        O plano original entregou uma camada forte de tração de awareness — necessária e bem feita.
+        O que vamos adicionar nos próximos meses é a camada de <strong>fundamentals</strong> que sustenta
+        a tese de exit. Por isso o Stage 03 vai detalhar como cada ação de marketing serve essa tese.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 02 — DIAGNÓSTICO EM PARCERIA
+========================================= -->
+<section class="stage stage--alt" id="analise">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 02 · DIAGNÓSTICO EM PARCERIA + CALIBRAÇÃO</div>
+      <h2 class="stage__title">CONSTRUINDO <em>JUNTOS</em> A BASE</h2>
+      <p class="stage__sub">
+        O plano elaborado pelo cliente com o consultor é um documento valioso — trouxe ativos
+        estratégicos importantes, definiu uma visão clara e abriu conversas que estavam represadas.
+        Nosso papel agora, ao lado da Gamer Hut, é <strong style="color: var(--c-white);">consolidar essas bases, auditar os números
+        e adicionar a camada operacional</strong> que transforma intenção em entrega.
+      </p>
+    </div>
+
+    <!-- ============== CALIBRAÇÃO ANALÍTICA REALIZADA ============== -->
+    <div style="background: linear-gradient(135deg, rgba(74,222,128,.06) 0%, var(--c-charcoal) 70%); border: 2px solid var(--c-success); padding: var(--s-5); margin-bottom: var(--s-6);">
+      <div class="arcade" style="font-size: 10px; letter-spacing: .22em; color: var(--c-success); margin-bottom: var(--s-3);">
+        ◢ CALIBRAÇÃO ANALÍTICA EXECUTADA · MAIO 2026
+      </div>
+      <h3 style="font-family: var(--f-display); font-size: clamp(28px, 4vw, 40px); line-height: 1.1; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: var(--s-3);">
+        AUDITAMOS O 0,31% — E TROUXEMOS À <em style="color: var(--c-success); font-style: normal;">LUZ</em> O QUE OS DADOS REAIS DIZEM
+      </h3>
+      <p style="color: var(--c-cool); font-size: 16px; line-height: 1.6; max-width: 820px; margin-bottom: var(--s-4);">
+        Antes de validar qualquer KPI no plano original, a TGT executou uma calibração analítica completa
+        com dados oficiais das plataformas (Meta Business, Google Analytics 4, Google Ads, TikTok Ads)
+        no período <strong style="color: var(--c-white);">Fev–Mai/2026</strong>, comparado com Nov/25–Fev/26.
+        Esta seção apresenta o que mudou na nossa leitura — e por quê.
+      </p>
+
+      <!-- HONESTIDADE INTELECTUAL -->
+      <div style="background: rgba(0,0,0,.4); border-left: 4px solid var(--c-orange); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-4);">
+        <div class="arcade" style="font-size: 9px; letter-spacing: .22em; color: var(--c-orange); margin-bottom: 8px;">
+          POSTURA TGT · TRANSPARÊNCIA TOTAL
+        </div>
+        <p style="color: var(--c-skin); font-size: 16px; line-height: 1.6; font-family: var(--f-display); text-transform: uppercase; letter-spacing: -0.01em;">
+          O 0,31% citado pelo plano original <em style="color: var(--c-success); font-style: normal;">ESTAVA CORRETO.</em>
+          Recalculamos com dados oficiais e o número bate.
+        </p>
+        <p style="color: var(--c-cool); font-size: 14px; line-height: 1.6; margin-top: var(--s-2);">
+          Nossa primeira reação foi questionar a metodologia, mas a calibração confirmou: o número está calibrado.
+          O que mudou — e era o ponto crítico — foi o <strong style="color: var(--c-white);">benchmark de comparação</strong> e a
+          <strong style="color: var(--c-white);">interpretação do que esse número significa</strong>.
+        </p>
+      </div>
+
+      <h4 style="font-family: var(--f-display); font-size: 22px; text-transform: uppercase; margin-bottom: var(--s-3); color: var(--c-orange);">
+        ◢ O QUE OS DADOS REAIS REVELARAM
+      </h4>
+
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Métrica</th>
+              <th>Plano original</th>
+              <th>Calibração TGT</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>ER tradicional · feed</strong><br><span class="small text-cool">(likes+coments / followers)</span></td>
+              <td class="mono">0,31%</td>
+              <td class="mono">0,19% – 0,23%</td>
+              <td><span class="tag tag--success">CONFIRMADO*</span></td>
+            </tr>
+            <tr>
+              <td><strong>ER tradicional · reels</strong><br><span class="small text-cool">(likes+coments / followers)</span></td>
+              <td class="mono text-cool">não citado</td>
+              <td class="mono">0,21% – 0,26%</td>
+              <td><span class="tag tag--info">NOVO DADO</span></td>
+            </tr>
+            <tr style="background: rgba(74,222,128,.05);">
+              <td><strong class="text-success">IR moderno · por reach</strong> ⭐<br><span class="small text-cool">(interactions / reach · métrica do IG nativo)</span></td>
+              <td class="mono text-cool">não citado</td>
+              <td class="mono text-success"><strong>5% – 10%</strong> nos top</td>
+              <td><span class="tag tag--success">WORLD-CLASS</span></td>
+            </tr>
+            <tr style="background: rgba(255,194,122,.04);">
+              <td><strong class="text-skin">Reach % da base</strong><br><span class="small text-cool">(reach médio / 101K followers)</span></td>
+              <td class="mono text-cool">não citado</td>
+              <td class="mono text-skin"><strong>~17%</strong></td>
+              <td><span class="tag tag--warning">OPORTUNIDADE</span></td>
+            </tr>
+            <tr>
+              <td><strong>Followers atuais</strong></td>
+              <td class="mono">98–99K</td>
+              <td class="mono">101.110</td>
+              <td><span class="tag tag--success">CONFIRMADO</span></td>
+            </tr>
+            <tr>
+              <td><strong>Crescimento followers (3m)</strong></td>
+              <td class="mono">não detalhado</td>
+              <td class="mono">+19.114 (+23%)</td>
+              <td><span class="tag tag--success">FORTE</span></td>
+            </tr>
+            <tr>
+              <td><strong>CPF efetivo (campanha follower)</strong></td>
+              <td class="mono">não detalhado</td>
+              <td class="mono">~R$ 0,70/follower</td>
+              <td><span class="tag tag--success">EXCELENTE</span></td>
+            </tr>
+            <tr>
+              <td><strong>Engajamento total</strong></td>
+              <td class="mono">"crítico"</td>
+              <td class="mono"><strong class="text-success">+641%</strong> vs período anterior</td>
+              <td><span class="tag tag--success">CRESCENDO</span></td>
+            </tr>
+            <tr>
+              <td><strong>ROAS Google Ads</strong></td>
+              <td class="mono">não citado</td>
+              <td class="mono"><strong class="text-success">24,02×</strong></td>
+              <td><span class="tag tag--success">WORLD-CLASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>ROAS GA4 geral</strong></td>
+              <td class="mono">não citado</td>
+              <td class="mono"><strong class="text-success">17,52×</strong> (+269%)</td>
+              <td><span class="tag tag--success">WORLD-CLASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>Receita 3 meses</strong></td>
+              <td class="mono">não citado</td>
+              <td class="mono"><strong class="text-success">R$ 508.394</strong> (+62%)</td>
+              <td><span class="tag tag--success">CRESCENDO</span></td>
+            </tr>
+            <tr>
+              <td><strong>Mediana global IG</strong></td>
+              <td class="mono">≥ 4,5% como meta</td>
+              <td class="mono">0,36% – 0,56%</td>
+              <td><span class="tag tag--warning">REPOSICIONAR</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="small text-cool" style="margin-top: var(--s-3); font-style: italic;">
+        Fonte: Relatório consolidado RD Station Marketing 08/02/2026–08/05/2026 (Meta Business + GA4 + Google Ads + TikTok Ads).
+        Benchmark global: Sprout Social/RivalIQ 2025 e ClickAnalytic 2026.
+      </p>
+
+      <!-- A LEITURA QUE IMPORTA · NOTA SOBRE METODOLOGIA -->
+      <div style="margin-top: var(--s-3); padding: var(--s-3); background: rgba(177,177,177,.04); border-left: 3px solid var(--c-cool); font-size: 13px; color: var(--c-cool);">
+        <p style="margin: 0;">
+          <strong class="text-skin">* Nota metodológica:</strong> O 0,31% do plano original e o 0,19–0,23% da calibração TGT
+          estão na <strong>mesma ordem de grandeza</strong>. A diferença vem de amostragem (período/seleção de posts).
+          Mas o ponto crítico — explicado em detalhe no bloco abaixo — é que <strong>essa fórmula tradicional já não é a métrica
+          que melhor representa a performance do Instagram em 2026</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============== AS 3 FÓRMULAS · O VERDADEIRO ACHADO ============== -->
+    <div style="background: linear-gradient(135deg, rgba(74,222,128,.06) 0%, var(--c-charcoal) 70%); border: 2px solid var(--c-success); padding: var(--s-5); margin-bottom: var(--s-6);">
+      <div class="arcade" style="font-size: 10px; letter-spacing: .22em; color: var(--c-success); margin-bottom: var(--s-3);">
+        ◢ ACHADO TÉCNICO · ENGAGEMENT NÃO É UMA MÉTRICA SÓ
+      </div>
+      <h3 style="font-family: var(--f-display); font-size: clamp(28px, 4vw, 40px); line-height: 1.1; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: var(--s-3);">
+        EXISTEM 3 FÓRMULAS DE ENGAGEMENT. <em style="color: var(--c-success); font-style: normal;">O 0,2% É UMA · O 5–10% É OUTRA.</em>
+      </h3>
+      <p style="color: var(--c-cool); font-size: 16px; line-height: 1.6; max-width: 880px; margin-bottom: var(--s-4);">
+        Tanto o plano original (0,31%) quanto a calibração TGT (0,19–0,26%) usaram a <strong style="color: var(--c-white);">fórmula tradicional</strong>
+        (likes+comments / followers) — métrica dos anos 2015–2020, anterior aos Reels.
+        O Instagram nativo hoje calcula performance por uma <strong style="color: var(--c-success);">métrica diferente:
+        Interaction Rate por Reach</strong>. E nessa métrica, a Gamer Hut performa world-class.
+      </p>
+
+      <!-- DECLARAÇÃO MÉTRICA NATIVA -->
+      <div style="margin-bottom: var(--s-4); padding: var(--s-4); background: rgba(74,222,128,.08); border-left: 4px solid var(--c-success);">
+        <div class="arcade" style="font-size: 9px; color: var(--c-success); letter-spacing: .22em; margin-bottom: 8px;">
+          ⭐ MÉTRICA NATIVA DO INSTAGRAM · PADRÃO 2026
+        </div>
+        <p style="color: var(--c-white); font-size: 15px; line-height: 1.6; margin: 0;">
+          O <strong>Interaction Rate por reach</strong> é a métrica que aparece no <strong>Instagram Insights nativo</strong>
+          (dashboard que cada conta vê no próprio app) e no <strong>Professional Dashboard</strong>. Não é fórmula
+          inventada pela TGT — é o padrão que o algoritmo do IG usa porque otimiza por
+          <em style="color: var(--c-skin); font-style: normal;">retenção e alcance novo</em>, não por engagement de seguidores existentes.
+          Confirmado pela <strong>Meta Newsroom 2024</strong> e referenciado por Hootsuite, Sprout, Socialinsider e DashSocial.
+        </p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Fórmula</th>
+              <th>Como calcula</th>
+              <th>Gamer Hut (Fev–Mai/26)</th>
+              <th>Leitura</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>ER tradicional · feed</strong></td>
+              <td class="small text-cool">(likes + comments) / followers</td>
+              <td class="mono">0,19% – 0,23%</td>
+              <td class="small">Abaixo da mediana global (0,36–0,56%)</td>
+            </tr>
+            <tr>
+              <td><strong>ER tradicional · reels</strong></td>
+              <td class="small text-cool">(likes + comments) / followers</td>
+              <td class="mono">0,21% – 0,26%</td>
+              <td class="small">Abaixo da mediana global, métrica defasada</td>
+            </tr>
+            <tr>
+              <td><strong>ER ampliado</strong></td>
+              <td class="small text-cool">(todas interactions) / followers</td>
+              <td class="mono">0,23% – 0,27%</td>
+              <td class="small">Inclui saves + shares · ainda métrica antiga</td>
+            </tr>
+            <tr style="background: rgba(74,222,128,.08);">
+              <td><strong class="text-success">IR moderno · por reach</strong> ⭐</td>
+              <td class="small text-cool">interactions / reach</td>
+              <td class="mono text-success"><strong>5% – 10%</strong> nos top performers</td>
+              <td class="small text-success"><strong>WORLD-CLASS · métrica que IG usa hoje</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="font-family: var(--f-display); font-size: 22px; text-transform: uppercase; margin: var(--s-5) 0 var(--s-3); color: var(--c-success);">
+        ◢ TOP PERFORMERS · DADOS OFICIAIS DO RELATÓRIO
+      </h4>
+
+      <div class="grid grid-2">
+        <div>
+          <p class="arcade text-skin" style="font-size: 9px; margin-bottom: var(--s-2);">TOP 5 REELS · IR POR REACH</p>
+          <table class="tbl" style="font-size: 13px;">
+            <thead>
+              <tr><th>Reel</th><th>Reach</th><th>IR</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Crimson Desert</strong></td><td class="mono">22.677</td><td class="mono text-success"><strong>9,20%</strong></td></tr>
+              <tr><td>Star Wars</td><td class="mono">10.094</td><td class="mono text-success">5,56%</td></tr>
+              <tr><td>Pokopi</td><td class="mono">7.704</td><td class="mono text-success">5,18%</td></tr>
+              <tr><td>Invincible VS</td><td class="mono">8.787</td><td class="mono text-success">4,65%</td></tr>
+              <tr><td>NIOH 3</td><td class="mono">7.928</td><td class="mono">1,34%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p class="arcade text-skin" style="font-size: 9px; margin-bottom: var(--s-2);">TOP 5 POSTS · IR POR REACH</p>
+          <table class="tbl" style="font-size: 13px;">
+            <thead>
+              <tr><th>Post</th><th>Reach</th><th>IR</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Resident Evil Requiem</strong></td><td class="mono">15.706</td><td class="mono text-success"><strong>10,76%</strong></td></tr>
+              <tr><td>Crimson Desert pré-venda</td><td class="mono">20.284</td><td class="mono text-success">8,42%</td></tr>
+              <tr><td>Crimson Desert envio</td><td class="mono">15.905</td><td class="mono text-success">7,64%</td></tr>
+              <tr><td>Bônus pré-venda</td><td class="mono">20.015</td><td class="mono text-success">6,54%</td></tr>
+              <tr><td>Carrousel padrão</td><td class="mono">~13.000</td><td class="mono">~3,5%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="small text-cool" style="margin-top: var(--s-3); font-style: italic;">
+        Fonte: RD Station Marketing · top performers extraídos do relatório consolidado 08/02–08/05/2026.
+      </p>
+
+      <!-- BENCHMARKS COM FONTES -->
+      <div style="margin-top: var(--s-4); padding: var(--s-4); background: rgba(0,0,0,.4); border-left: 3px solid var(--c-orange);">
+        <p class="arcade text-orange" style="font-size: 9px; margin-bottom: var(--s-2);">RÉGUAS DE COMPARAÇÃO · BENCHMARKS GLOBAIS 2025–2026</p>
+        <div class="grid grid-2">
+          <div>
+            <p class="small text-cool" style="margin-bottom: 8px;"><strong class="text-skin">FÓRMULA TRADICIONAL · ER POR FOLLOWERS</strong></p>
+            <table class="tbl" style="font-size: 13px;">
+              <tbody>
+                <tr><td>Sprout Social 2025 · global IG</td><td class="mono">0,79%</td></tr>
+                <tr><td>RivalIQ 2025 · mediana</td><td class="mono">0,36%</td></tr>
+                <tr><td>Socialinsider 2026 · 70M posts</td><td class="mono">0,48%</td></tr>
+                <tr><td>DashSocial 2025 · average</td><td class="mono">0,30%</td></tr>
+                <tr style="background: rgba(177,177,177,.08);"><td><strong>@gamerhut.store</strong></td><td class="mono"><strong>0,21–0,26%</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p class="small text-cool" style="margin-bottom: 8px;"><strong class="text-success">FÓRMULA MODERNA · IR POR REACH ⭐</strong></p>
+            <table class="tbl" style="font-size: 13px;">
+              <tbody>
+                <tr><td>Hootsuite 2025 · Reels average</td><td class="mono">1,9%</td></tr>
+                <tr><td>Hootsuite · "Good"</td><td class="mono">2 – 3%</td></tr>
+                <tr><td>Hootsuite · "Strong"</td><td class="mono">3 – 5%</td></tr>
+                <tr><td>"World-class"</td><td class="mono">5%+</td></tr>
+                <tr style="background: rgba(74,222,128,.1);"><td><strong>@gamerhut.store · top performers</strong></td><td class="mono text-success"><strong>5 – 10,76%</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="small text-cool" style="margin-top: var(--s-3);">
+          <strong class="text-success">Leitura técnica:</strong> os top conteúdos da Gamer Hut performam
+          <strong class="text-success">~5× acima do average global por reach (1,9% Hootsuite)</strong>.
+          O Crimson Desert (9,2%) é <strong>4,8× acima</strong>, o Resident Evil Requiem (10,76%) é <strong>5,4× acima</strong>.
+          Não é "bom para o tamanho" — é estatisticamente world-class para qualquer tamanho de conta.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============== O VERDADEIRO DESAFIO · REACH ============== -->
+    <div style="background: linear-gradient(135deg, rgba(255,194,122,.06) 0%, var(--c-charcoal) 70%); border: 2px solid var(--c-warning); padding: var(--s-5); margin-bottom: var(--s-6);">
+      <div class="arcade" style="font-size: 10px; letter-spacing: .22em; color: var(--c-warning); margin-bottom: var(--s-3);">
+        ◢ O VERDADEIRO DESAFIO · NÃO É CONTEÚDO. É ALCANCE.
+      </div>
+      <h3 style="font-family: var(--f-display); font-size: clamp(28px, 4vw, 44px); line-height: 1.1; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: var(--s-3);">
+        REACH É O DESAFIO. CONTEÚDO <em style="color: var(--c-warning); font-style: normal;">PERFORMA WORLD-CLASS.</em>
+      </h3>
+
+      <div class="grid grid-3" style="margin-bottom: var(--s-4);">
+        <div class="stat" style="border-color: rgba(74,222,128,.3);">
+          <div class="stat__label" style="color: var(--c-success);">IR REELS TOP (CRIMSON)</div>
+          <div class="stat__num" style="color: var(--c-success);">9,2%</div>
+          <div class="stat__sub">3-4× acima da média mundial · world-class</div>
+        </div>
+        <div class="stat" style="border-color: rgba(74,222,128,.3);">
+          <div class="stat__label" style="color: var(--c-success);">IR POSTS TOP (RE REQUIEM)</div>
+          <div class="stat__num" style="color: var(--c-success);">10,76%</div>
+          <div class="stat__sub">conteúdo de produto vende e engaja</div>
+        </div>
+        <div class="stat" style="border-color: rgba(255,194,122,.3);">
+          <div class="stat__label" style="color: var(--c-warning);">REACH MÉDIO / BASE</div>
+          <div class="stat__num" style="color: var(--c-warning);">~17%</div>
+          <div class="stat__sub">~17K alcance médio vs 101K seguidores</div>
+        </div>
+      </div>
+
+      <p style="color: var(--c-cool); font-size: 16px; line-height: 1.6; max-width: 880px; margin-bottom: var(--s-3);">
+        Cada post está alcançando apenas <strong style="color: var(--c-skin);">~17% da base de seguidores</strong>.
+        Quando o conteúdo chega, a performance é excelente (5–10% IR). O algoritmo do Instagram não está distribuindo
+        pra base completa — em parte porque seguidores conquistados via paid acumulam dormência natural,
+        em parte porque o IG vem reduzindo reach orgânico globalmente desde 2023.
+      </p>
+
+      <div style="padding: var(--s-3); background: rgba(0,0,0,.4); border-left: 4px solid var(--c-orange);">
+        <p class="arcade text-orange" style="font-size: 9px; margin-bottom: 8px;">A MUDANÇA DE NARRATIVA</p>
+        <div class="table-wrap" style="margin: 0;">
+          <table class="tbl" style="font-size: 14px;">
+            <thead>
+              <tr><th>Narrativa antiga (plano original)</th><th>Narrativa real (auditada)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>"Engagement crítico em 0,31%"</td>
+                <td><strong class="text-success">"Conteúdo top performa 5–10% IR · reach é o gargalo"</strong></td>
+              </tr>
+              <tr>
+                <td>Foco: melhorar conteúdo</td>
+                <td><strong class="text-success">Foco: amplificar reach + reativar dormentes + paid em top performers</strong></td>
+              </tr>
+              <tr>
+                <td>Métrica: subir ER tradicional</td>
+                <td><strong class="text-success">Métrica: % reach da base + manter IR alto + ROI multiplicado por post</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-top: var(--s-4); padding: var(--s-4); background: rgba(184,35,42,.08); border-left: 4px solid var(--c-tgt);">
+        <div class="arcade" style="font-size: 9px; letter-spacing: .22em; color: var(--c-tgt); margin-bottom: 8px;">
+          ◢ IMPLICAÇÃO COMERCIAL · FRENTE 05 · B2B PUBLISHERS
+        </div>
+        <p style="color: var(--c-white); font-size: 16px; line-height: 1.6;">
+          O <strong>IR de 9,2% no Crimson Desert</strong> e <strong>10,76% no Resident Evil Requiem</strong> são o
+          tipo de número que publishers querem ver pra abrir parceria de co-marketing.
+          A TGT vai usar esses cases — com prints do dashboard nativo do Instagram — como
+          <strong style="color: var(--c-skin);">munição principal do pitch deck B2B</strong> da Frente 05.
+          Vira tese de aquisição: "campanha com nossa marca entrega world-class IR de mídia física".
+        </p>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--f-display); font-size: 24px; text-transform: uppercase; margin-bottom: var(--s-3); color: var(--c-success);">
+      ◢ BASES CONSOLIDADAS — O ALICERCE DO PLANO
+    </h3>
+
+    <p class="text-cool" style="max-width: 720px; margin-bottom: var(--s-4); font-size: 15px;">
+      Seis pilares que vieram do trabalho conjunto cliente + consultoria e que vamos preservar
+      integralmente. São os ativos estruturais sobre os quais a TGT vai operacionalizar.
+    </p>
+
+    <div class="grid grid-3 mb-4">
+      <div class="card card--success">
+        <div class="card__eyebrow">DIAGNÓSTICO</div>
+        <h4 class="card__title" style="font-size: 18px;">Leitura do Instagram</h4>
+        <p class="card__body small">
+          A análise dos 8 pontos do feed (mix promocional, hashtags, saves, captions) está
+          <strong>tecnicamente bem estruturada</strong>. Vai ser a base do redesign que já estamos executando.
+        </p>
+      </div>
+      <div class="card card--success">
+        <div class="card__eyebrow">ARQUITETURA DE MARCA</div>
+        <h4 class="card__title" style="font-size: 18px;">Store × Shack</h4>
+        <p class="card__body small">
+          Separar canal de venda de canal de comunidade <strong>é a decisão correta</strong>.
+          Algoritmo do IG entende melhor, audiência consome diferente, métrica fica clara.
+        </p>
+      </div>
+      <div class="card card--success">
+        <div class="card__eyebrow">CRIATIVO</div>
+        <h4 class="card__title" style="font-size: 18px;">Fluffy &amp; Grumpy</h4>
+        <p class="card__body small">
+          Conceito de personagens com tensão narrativa (gente boa × ranzinza colecionador) é
+          <strong>excelente</strong>. Cria recall, gera meme, dá identidade pra Shack.
+        </p>
+      </div>
+      <div class="card card--success">
+        <div class="card__eyebrow">SOUND BRANDING</div>
+        <h4 class="card__title" style="font-size: 18px;">Identidade Sonora</h4>
+        <p class="card__body small">
+          Referência Intel bong / Netflix ta-dum é certeira. Já temos o engine 8-bit no brandbook —
+          dá pra <strong>derivar uma sonic logo</strong> sem partir do zero.
+        </p>
+      </div>
+      <div class="card card--success">
+        <div class="card__eyebrow">B2B</div>
+        <h4 class="card__title" style="font-size: 18px;">Tiers Bronze/Prata/Ouro</h4>
+        <p class="card__body small">
+          Estrutura comercial para publisher é sólida — facilita pitch, simplifica negociação.
+          <strong>Mantemos o framework</strong>, ajustamos só a meta de timing.
+        </p>
+      </div>
+      <div class="card card--success">
+        <div class="card__eyebrow">PLANEJAMENTO</div>
+        <h4 class="card__title" style="font-size: 18px;">Calendário Sazonal</h4>
+        <p class="card__body small">
+          BGS, CCXP, Black Friday, Game Awards, Summer Game Fest, TGS — todos os pontos certos.
+          <strong>É o esqueleto editorial</strong> de Mai a Dez.
+        </p>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--f-display); font-size: 24px; text-transform: uppercase; margin-top: var(--s-8); margin-bottom: var(--s-3); color: var(--c-warning);">
+      ◢ CALIBRAGENS DE RÉGUA — MEDIDAS POR CONTEXTO
+    </h3>
+
+    <div class="callout callout--info">
+      <div class="callout__label">POSTURA TGT · AO LADO DO CLIENTE</div>
+      <div class="callout__text" style="font-size: 22px;">
+        AS METAS DO PLANO SÃO <em>AMBIÇÕES VÁLIDAS</em>. NOSSO TRABALHO É <em>ANCORÁ-LAS NO CONTEXTO REAL</em>
+        DE OPERAÇÃO — CAPACITY, HISTÓRICO E BENCHMARK SETORIAL.
+      </div>
+      <div class="callout__sub">
+        Quando uma meta está fora do contexto, o time perde a régua e os trimestres viram frustração.
+        A proposta abaixo mantém a ambição estratégica do plano e adiciona a régua operacional —
+        construída a partir de dados públicos do setor de varejo gamer.
+      </div>
+    </div>
+
+    <!-- BENCHMARK CALL-OUT — destacando a régua certa -->
+    <div class="callout callout--info" style="margin-top: var(--s-4);">
+      <div class="callout__label">⚡ A RÉGUA DE BENCHMARK · O PONTO QUE PRECISA SER CALIBRADO</div>
+      <div class="callout__text" style="font-size: 24px;">
+        O 0,31% NÃO É "ESTADO CRÍTICO".
+        ESTÁ <em>PRÓXIMO DA MEDIANA GLOBAL DO INSTAGRAM</em> — 0,36–0,56%.
+      </div>
+      <div class="callout__sub" style="margin-top: var(--s-3);">
+        <strong style="color: var(--c-white);">Esse é o ponto principal de calibragem do plano original.</strong> A meta de "≥ 4,5%" como
+        benchmark sai de contas pequenas (1K–10K seguidores em nichos hiper-engajados como entretenimento e fashion),
+        onde cada seguidor é hiperengajado e o algoritmo não dilui o alcance. À medida que a conta cresce, a taxa cai
+        matematicamente — é regressão estatística, não falha de execução.
+      </div>
+      <div style="margin-top: var(--s-3); padding: var(--s-3); background: rgba(0,0,0,.4); border-left: 3px solid var(--c-orange);">
+        <p class="arcade text-orange" style="font-size: 9px; margin-bottom: 8px;">REFERÊNCIAS DE BENCHMARK · 2025–2026</p>
+        <table class="tbl" style="font-size: 13px;">
+          <thead>
+            <tr>
+              <th>Fonte</th>
+              <th>Métrica</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Sprout Social / RivalIQ 2025</td><td>Mediana global Instagram</td><td class="mono text-orange">0,36%</td></tr>
+            <tr><td>ClickAnalytic 2026 (400M perfis)</td><td>Mediana global Instagram</td><td class="mono text-orange">0,56%</td></tr>
+            <tr><td>ClickAnalytic 2026</td><td>Range típico Gaming</td><td class="mono text-orange">0,5% – 3%</td></tr>
+            <tr><td>ClickAnalytic 2026</td><td>Faixa 50K–100K seguidores · "Average"</td><td class="mono text-orange">~1% – 2%</td></tr>
+            <tr><td>Calibração TGT (referência)</td><td>MrBeast (398M seguidores)</td><td class="mono text-cool">0,15%</td></tr>
+            <tr style="background: rgba(242,102,65,.06);"><td><strong>@gamerhut.store · 101K</strong></td><td><strong>ER auditado (feed + reels)</strong></td><td class="mono"><strong class="text-skin">0,21% – 0,26%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout__sub" style="margin-top: var(--s-3);">
+        <strong style="color: var(--c-skin);">Calibragem TGT:</strong> sair de 0,21–0,26% atual para
+        <strong style="color: var(--c-orange);">0,5%</strong> (mediana global) em 6 meses é meta tangível —
+        praticamente <strong>2× o resultado atual</strong>. Stretch goal de <strong style="color: var(--c-orange);">0,8%</strong>
+        em 12 meses (acima da mediana, world-class para varejo +100K) com ajustes de mix editorial.
+      </div>
+    </div>
+
+    <p class="text-cool" style="max-width: 720px; margin: var(--s-6) 0 var(--s-3); font-size: 15px;">
+      A mesma lógica de "ambição válida + régua de contexto + dados auditados" se aplica aos demais KPIs.
+      Cada bloco abaixo mostra a meta original do plano, a calibragem proposta pela TGT
+      <strong style="color: var(--c-skin);">com base em dados oficiais auditados</strong>, e o racional em uma linha.
+    </p>
+
+    <div class="grid grid-2 mt-4">
+      <div class="kpi-recal">
+        <div class="kpi-recal__head">
+          <span class="kpi-recal__title">META · IG SEGUIDORES</span>
+          <span class="tag tag--success">CALIBRADO</span>
+        </div>
+        <div class="kpi-recal__row">
+          <div class="kpi-recal__cell kpi-recal__cell--before">
+            <div class="kpi-recal__cell-label">PLANO ORIGINAL</div>
+            <div class="kpi-recal__cell-val">500K em 8m</div>
+          </div>
+          <div class="kpi-recal__arrow">▶</div>
+          <div class="kpi-recal__cell kpi-recal__cell--after">
+            <div class="kpi-recal__cell-label">CALIBRAGEM TGT (AUDITADO)</div>
+            <div class="kpi-recal__cell-val">180–220K</div>
+          </div>
+        </div>
+        <div class="kpi-recal__rationale">
+          <strong>RACIONAL AUDITADO:</strong> Histórico real do trimestre Fev–Mai/26 mostra
+          <strong>+19.114 followers em 3 meses</strong> com investimento médio de campanhas de aquisição.
+          CPF efetivo apurado de <strong>~R$ 0,70/follower</strong> — abaixo da média do varejo brasileiro.
+          Projeção de continuidade: <strong>~60–75K em 8 meses</strong> sustentando ritmo atual,
+          chegando em ~<strong>180–220K</strong> com paid ampliado conforme proposto.
+        </div>
+      </div>
+
+      <div class="kpi-recal">
+        <div class="kpi-recal__head">
+          <span class="kpi-recal__title">RECEITA PUBLISHERS</span>
+          <span class="tag tag--warning">CALIBRAR</span>
+        </div>
+        <div class="kpi-recal__row">
+          <div class="kpi-recal__cell kpi-recal__cell--before">
+            <div class="kpi-recal__cell-label">PLANO ORIGINAL</div>
+            <div class="kpi-recal__cell-val">R$ 30K/mês até OUT</div>
+          </div>
+          <div class="kpi-recal__arrow">▶</div>
+          <div class="kpi-recal__cell kpi-recal__cell--after">
+            <div class="kpi-recal__cell-label">CALIBRAGEM TGT</div>
+            <div class="kpi-recal__cell-val">R$ 8–15K/mês DEZ</div>
+          </div>
+        </div>
+        <div class="kpi-recal__rationale">
+          <strong>RACIONAL:</strong> Sem contratos hoje + ciclo de venda B2B publisher (3–6 meses) +
+          ausência de cases mensuráveis para apresentar = improvável fechar tier OURO em 2026.
+          <strong style="color: var(--c-success);">Boa notícia da calibração:</strong> agora temos dados sólidos
+          (ROAS 17–24×, +641% engagement, 750 new buyers) para construir o pitch deck B2B com cases reais.
+          Caminho mais sólido: <strong>1–2 BRONZE até OUT, 3–4 BRONZE/PRATA até DEZ.</strong>
+        </div>
+      </div>
+
+      <div class="kpi-recal">
+        <div class="kpi-recal__head">
+          <span class="kpi-recal__title">CRESCIMENTO RECEITA MoM</span>
+          <span class="tag tag--success">CALIBRADO</span>
+        </div>
+        <div class="kpi-recal__row">
+          <div class="kpi-recal__cell kpi-recal__cell--before">
+            <div class="kpi-recal__cell-label">PLANO ORIGINAL</div>
+            <div class="kpi-recal__cell-val">15% MoM</div>
+          </div>
+          <div class="kpi-recal__arrow">▶</div>
+          <div class="kpi-recal__cell kpi-recal__cell--after">
+            <div class="kpi-recal__cell-label">CALIBRAGEM TGT (AUDITADO)</div>
+            <div class="kpi-recal__cell-val">~17% YoY trimestre</div>
+          </div>
+        </div>
+        <div class="kpi-recal__rationale">
+          <strong>RACIONAL AUDITADO:</strong> Receita real Fev–Mai/26 = R$ 508.394 vs período anterior R$ 312.789 =
+          <strong class="text-success">+62,54% no trimestre</strong> = ~17% MoM equivalente.
+          Manter esse ritmo já gera <strong>1,72× ao ano</strong>. Meta MoM de 15% original é coerente como
+          <em>stretch</em> mensal, mas a régua sustentável fica em <strong>5–8% MoM (CAGR ano = +75–110%)</strong>.
+        </div>
+      </div>
+
+      <div class="kpi-recal">
+        <div class="kpi-recal__head">
+          <span class="kpi-recal__title">META 1 MM SEGUIDORES TOTAL</span>
+          <span class="tag tag--warning">CALIBRAR</span>
+        </div>
+        <div class="kpi-recal__row">
+          <div class="kpi-recal__cell kpi-recal__cell--before">
+            <div class="kpi-recal__cell-label">PLANO ORIGINAL</div>
+            <div class="kpi-recal__cell-val">1.000.000</div>
+          </div>
+          <div class="kpi-recal__arrow">▶</div>
+          <div class="kpi-recal__cell kpi-recal__cell--after">
+            <div class="kpi-recal__cell-label">CALIBRAGEM TGT</div>
+            <div class="kpi-recal__cell-val">350–450K</div>
+          </div>
+        </div>
+        <div class="kpi-recal__rationale">
+          <strong>RACIONAL:</strong> Distribuição realista projetada com base no ritmo auditado:
+          IG 180–220K · TikTok 50–80K (base atual 20,7K + crescimento sustentado) · YouTube 15–30K ·
+          Discord 5K · X+FB 10K · LinkedIn 3K = ~280–350K base. <em>Stretch goal:</em> 450K com paid extra
+          ou viralização orgânica significativa de algum conteúdo Shack.
+        </div>
+      </div>
+
+      <div class="kpi-recal">
+        <div class="kpi-recal__head">
+          <span class="kpi-recal__title">CRONOGRAMA "AÇÃO IMEDIATA"</span>
+          <span class="tag tag--info">ATUALIZAR</span>
+        </div>
+        <div class="kpi-recal__row">
+          <div class="kpi-recal__cell kpi-recal__cell--before">
+            <div class="kpi-recal__cell-label">PLANO ORIGINAL</div>
+            <div class="kpi-recal__cell-val">17/Abr · 22/Abr · 30/Abr</div>
+          </div>
+          <div class="kpi-recal__arrow">▶</div>
+          <div class="kpi-recal__cell kpi-recal__cell--after">
+            <div class="kpi-recal__cell-label">ATUALIZAÇÃO</div>
+            <div class="kpi-recal__cell-val">15/Mai · 22/Mai · 30/Mai</div>
+          </div>
+        </div>
+        <div class="kpi-recal__rationale">
+          <strong>OBSERVAÇÃO:</strong> Datas do slide 27 do plano original são de Abril/26 — provável
+          ajuste de versão pendente. Atualizamos para refletir o início real do ciclo executivo
+          em <strong>Mai/26</strong>.
+        </div>
+      </div>
+
+      <div class="kpi-recal">
+        <div class="kpi-recal__head">
+          <span class="kpi-recal__title">ENGAJAMENTO IG</span>
+          <span class="tag tag--success">CALIBRADO</span>
+        </div>
+        <div class="kpi-recal__row">
+          <div class="kpi-recal__cell kpi-recal__cell--before">
+            <div class="kpi-recal__cell-label">PLANO ORIGINAL</div>
+            <div class="kpi-recal__cell-val">≥ 4,5%</div>
+          </div>
+          <div class="kpi-recal__arrow">▶</div>
+          <div class="kpi-recal__cell kpi-recal__cell--after">
+            <div class="kpi-recal__cell-label">CALIBRAGEM TGT (AUDITADO)</div>
+            <div class="kpi-recal__cell-val">0,5% · 0,8% stretch</div>
+          </div>
+        </div>
+        <div class="kpi-recal__rationale">
+          <strong>RACIONAL AUDITADO:</strong> Base real auditada = 0,21–0,26% ER médio (feed + reels).
+          Meta de <strong>0,5%</strong> em 6 meses = mediana global = <strong>2× o resultado atual.</strong>
+          Stretch <strong>0,8%</strong> em 12 meses = world-class para varejo +100K.
+          Engajamento total absoluto já cresceu <strong class="text-success">+641%</strong> no trimestre auditado —
+          a tração existe, falta calibrar régua.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 03 — TESE DE VENDA EM 2030
+========================================= -->
+<section class="stage" id="recal">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 03 · TESE DE VALUATION</div>
+      <h2 class="stage__title">O QUE <em>REALMENTE</em> MOVE O EXIT EM 2030</h2>
+      <p class="stage__sub">
+        Se o objetivo final é vender a empresa, o plano de marketing precisa servir essa tese.
+        Comprador estratégico em 2030 olha para 5 fundamentos — e marketing impacta diretamente em 4 deles.
+        Esta é a régua que vamos usar para priorizar cada ação ao longo dos próximos 8 meses.
+      </p>
+    </div>
+
+    <!-- Definição de MOAT -->
+    <div style="background: linear-gradient(135deg, rgba(25,79,144,.12) 0%, var(--c-jet) 80%); border: 1px solid rgba(25,79,144,.3); padding: var(--s-4); margin-bottom: var(--s-5);">
+      <div class="arcade" style="font-size: 10px; letter-spacing: .22em; color: var(--c-sonic); margin-bottom: var(--s-2);">
+        ◢ GLOSSÁRIO · CONCEITO-CHAVE
+      </div>
+      <h3 style="font-family: var(--f-display); font-size: 28px; text-transform: uppercase; line-height: 1.1; margin-bottom: var(--s-2); color: var(--c-white);">
+        MOAT <span style="color: var(--c-sonic);">/moʊt/</span>
+      </h3>
+      <p style="color: var(--c-cool); font-size: 16px; line-height: 1.6; max-width: 760px;">
+        Termo do inglês que significa, literalmente, <strong style="color: var(--c-white);">"fosso de castelo medieval"</strong> —
+        aquela vala com água que protegia a fortaleza de invasores. Em estratégia de negócios,
+        popularizado por <strong style="color: var(--c-skin);">Warren Buffett</strong>, virou metáfora para
+        <strong style="color: var(--c-white);">vantagem competitiva sustentável</strong> — a barreira que
+        protege a empresa de ser facilmente copiada ou substituída.
+      </p>
+      <div style="margin-top: var(--s-3); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s-2); padding-top: var(--s-3); border-top: 1px solid rgba(255,255,255,.1);">
+        <div>
+          <div class="arcade" style="font-size: 8px; color: var(--c-orange); letter-spacing: .2em; margin-bottom: 4px;">EXEMPLO 01</div>
+          <p style="color: var(--c-cool); font-size: 13px; line-height: 1.5;"><strong style="color: var(--c-white);">Marca:</strong> Coca-Cola, Apple, Lego</p>
+        </div>
+        <div>
+          <div class="arcade" style="font-size: 8px; color: var(--c-orange); letter-spacing: .2em; margin-bottom: 4px;">EXEMPLO 02</div>
+          <p style="color: var(--c-cool); font-size: 13px; line-height: 1.5;"><strong style="color: var(--c-white);">Efeito de rede:</strong> WhatsApp, Instagram</p>
+        </div>
+        <div>
+          <div class="arcade" style="font-size: 8px; color: var(--c-orange); letter-spacing: .2em; margin-bottom: 4px;">EXEMPLO 03</div>
+          <p style="color: var(--c-cool); font-size: 13px; line-height: 1.5;"><strong style="color: var(--c-white);">Custos de troca:</strong> SAP, Salesforce</p>
+        </div>
+        <div>
+          <div class="arcade" style="font-size: 8px; color: var(--c-orange); letter-spacing: .2em; margin-bottom: 4px;">EXEMPLO 04</div>
+          <p style="color: var(--c-cool); font-size: 13px; line-height: 1.5;"><strong style="color: var(--c-white);">Escala:</strong> Amazon, Mercado Livre</p>
+        </div>
+      </div>
+      <p style="color: var(--c-skin); font-size: 14px; line-height: 1.6; margin-top: var(--s-3); padding: var(--s-2) var(--s-3); background: rgba(0,0,0,.4); border-left: 3px solid var(--c-orange);">
+        <strong style="color: var(--c-orange);">No caso da Gamer Hut</strong>, os moats em construção são:
+        marca confiável (procedência, NF, "lacrado de verdade"), parcerias diretas com publishers
+        (acesso privilegiado a estoque e lançamentos), comunidade engajada (network effect),
+        e a posição de <strong>maior canal de mídia física do Brasil</strong> (escala de nicho).
+      </p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="pillar">
+        <div class="pillar__num">01</div>
+        <div class="pillar__icon">$</div>
+        <h3 class="pillar__title">EBITDA Recorrente</h3>
+        <div class="pillar__sub">PESO NO VALUATION · 40%</div>
+        <ul class="pillar__list">
+          <li>Receita previsível mês a mês = múltiplo maior</li>
+          <li>Margem de venda direta &gt; margem marketplace</li>
+          <li>Receita publisher = recorrência B2B</li>
+          <li><strong>Métrica principal:</strong> % receita não-marketplace</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar__num">02</div>
+        <div class="pillar__icon">⊟</div>
+        <h3 class="pillar__title">Diversificação de Canal</h3>
+        <div class="pillar__sub">PESO NO VALUATION · 25%</div>
+        <ul class="pillar__list">
+          <li>Reduzir os 86% de marketplace</li>
+          <li>Loja própria = controle de margem e dado</li>
+          <li>Comunidade = canal de venda direta</li>
+          <li><strong>Métrica:</strong> share of revenue por canal</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar__num">03</div>
+        <div class="pillar__icon">▣</div>
+        <h3 class="pillar__title">Moat Competitivo</h3>
+        <div class="pillar__sub">PESO NO VALUATION · 20%</div>
+        <ul class="pillar__list">
+          <li>Marca reconhecida = barreira de entrada</li>
+          <li>Comunidade engajada = ativo intangível</li>
+          <li>Contratos com publisher = exclusividade</li>
+          <li><strong>Métrica:</strong> NPS, share of voice, parcerias</li>
+        </ul>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar__num">04</div>
+        <div class="pillar__icon">↗</div>
+        <h3 class="pillar__title">Growth Story</h3>
+        <div class="pillar__sub">PESO NO VALUATION · 15%</div>
+        <ul class="pillar__list">
+          <li>Trajetória clara de crescimento ano a ano</li>
+          <li>Audiência crescente em canais próprios</li>
+          <li>Expansão de SKU + categorias adjacentes</li>
+          <li><strong>Métrica:</strong> CAGR receita + base ativa</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Síntese reforçada -->
+    <div style="margin-top: var(--s-6); background: linear-gradient(135deg, rgba(242,102,65,.08) 0%, var(--c-charcoal) 70%); border: 2px solid var(--c-orange); padding: var(--s-5);">
+      <div class="arcade" style="font-size: 10px; letter-spacing: .22em; color: var(--c-orange); margin-bottom: var(--s-3);">
+        ◢ SÍNTESE ESTRATÉGICA · O TESTE DOS R$ 1
+      </div>
+      <h3 style="font-family: var(--f-display); font-size: clamp(28px, 4vw, 44px); line-height: 1.1; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: var(--s-3);">
+        TODA AÇÃO DE MARKETING TEM QUE PASSAR POR <em style="color: var(--c-orange); font-style: normal;">UMA PERGUNTA SÓ:</em>
+      </h3>
+      <div style="font-family: var(--f-display); font-size: clamp(24px, 3vw, 36px); line-height: 1.2; color: var(--c-skin); padding: var(--s-3) var(--s-4); background: rgba(0,0,0,.5); border-left: 4px solid var(--c-orange); margin-bottom: var(--s-3); text-transform: uppercase; letter-spacing: -0.01em;">
+        "ISSO MOVE <span style="color: var(--c-orange);">EBITDA</span>, DIVERSIFICAÇÃO,
+        <span style="color: var(--c-orange);">MOAT</span> OU GROWTH STORY?"
+      </div>
+      <p style="color: var(--c-cool); font-size: 16px; line-height: 1.6; max-width: 800px;">
+        Se a resposta for <strong style="color: var(--c-success);">SIM em pelo menos um dos quatro</strong>, a ação entra
+        no plano. Se a resposta for "vai gerar engajamento bonitinho mas não move nada disso",
+        a ação não entra — por mais charmosa que pareça.
+      </p>
+      <p style="color: var(--c-cool); font-size: 14px; line-height: 1.6; max-width: 800px; margin-top: var(--s-3); padding-top: var(--s-3); border-top: 1px solid rgba(255,255,255,.1);">
+        <strong style="color: var(--c-orange);">Por quê isso importa agora:</strong> em 2030, quando um comprador estratégico
+        olhar para a Gamer Hut, ele vai abrir uma planilha de DCF (fluxo de caixa descontado), aplicar um
+        múltiplo de EBITDA setorial (varejo gamer está em 6–10× hoje, com prêmio de 1–2× para empresas com
+        moat claro), e calcular o valuation. <strong style="color: var(--c-skin);">Cada R$ 1 de EBITDA recorrente
+        construído entre 2026 e 2030 vira R$ 6–12 de valuation.</strong> Cada seguidor sem conversão vira R$ 0.
+        É essa a régua que define onde a TGT vai aplicar as 330 horas/mês.
+      </p>
+    </div>
+
+    <!-- ============== ACHADO DA CALIBRAÇÃO · FUNIS POR CANAL ============== -->
+    <div style="margin-top: var(--s-6); background: var(--c-jet); border: 1px solid rgba(25,79,144,.4); border-left: 4px solid var(--c-sonic); padding: var(--s-5);">
+      <div class="arcade" style="font-size: 10px; letter-spacing: .22em; color: var(--c-sonic); margin-bottom: var(--s-3);">
+        ◢ ACHADO DA CALIBRAÇÃO · FUNIS POR CANAL
+      </div>
+      <h3 style="font-family: var(--f-display); font-size: clamp(24px, 3.5vw, 36px); line-height: 1.1; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: var(--s-3);">
+        CADA CANAL TEM <em style="color: var(--c-orange); font-style: normal;">SUA FUNÇÃO</em> — E É ASSIM QUE DEVE SER
+      </h3>
+      <p style="color: var(--c-cool); font-size: 15px; line-height: 1.6; max-width: 820px; margin-bottom: var(--s-4);">
+        Cruzando os dados auditados de Meta + GA4 + Google Ads, fica nítido como cada canal contribui
+        para o funil completo. <strong style="color: var(--c-white);">Instagram opera no topo de funil — awareness, comunidade,
+        crescimento de marca</strong>. Não é (e não deve ser) o canal de fechamento de venda. Quem fecha venda
+        é o Google (intenção declarada) e o Direct (recorrência da base já fidelizada).
+        Esse desenho é <strong style="color: var(--c-skin);">por design, não por falha</strong>.
+      </p>
+
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Canal</th>
+              <th>Função no funil</th>
+              <th>Sessões (3m)</th>
+              <th>% tráfego</th>
+              <th>Receita</th>
+              <th>% receita</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Google</strong> (cpc + organic)</td>
+              <td><span class="tag tag--success" style="font-size: 7px;">FUNDO DE FUNIL</span></td>
+              <td class="mono">90.517</td>
+              <td class="mono">47%</td>
+              <td class="mono">R$ 266.511</td>
+              <td class="mono"><strong class="text-success">52%</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Direct</strong> (recorrência)</td>
+              <td><span class="tag tag--success" style="font-size: 7px;">FUNDO DE FUNIL</span></td>
+              <td class="mono">33.367</td>
+              <td class="mono">17%</td>
+              <td class="mono">R$ 170.788</td>
+              <td class="mono"><strong class="text-success">34%</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Instagram</strong></td>
+              <td><span class="tag tag--info" style="font-size: 7px;">TOPO DE FUNIL</span></td>
+              <td class="mono">38.696</td>
+              <td class="mono"><strong class="text-orange">20%</strong></td>
+              <td class="mono">R$ 10.717</td>
+              <td class="mono">2,1%</td>
+            </tr>
+            <tr>
+              <td>Facebook</td>
+              <td><span class="tag tag--info" style="font-size: 7px;">TOPO DE FUNIL</span></td>
+              <td class="mono">8.517</td>
+              <td class="mono">4%</td>
+              <td class="mono">R$ 1.159</td>
+              <td class="mono">0,2%</td>
+            </tr>
+            <tr>
+              <td>RD Station</td>
+              <td><span class="tag tag--info" style="font-size: 7px;">NUTRIÇÃO</span></td>
+              <td class="mono">6.154</td>
+              <td class="mono">3%</td>
+              <td class="mono">R$ 2.219</td>
+              <td class="mono">0,4%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: var(--s-4); padding: var(--s-3); background: rgba(25,79,144,.1); border-left: 3px solid var(--c-sonic);">
+        <p style="color: var(--c-skin); font-size: 14px; line-height: 1.6;">
+          <strong style="color: var(--c-white);">Leitura TGT:</strong> O Instagram entrega exatamente o que se espera de um canal
+          de topo de funil — <strong>20% do tráfego total do site</strong>, formando audiência, base, comunidade.
+          As ações de IG no plano TGT (brandbook, pilares editoriais, Reels, Shack) são desenhadas para
+          <strong style="color: var(--c-orange);">awareness e crescimento de marca</strong> — que é o papel certo desse canal.
+          <br><br>
+          <strong style="color: var(--c-white);">Oportunidade complementar:</strong> à medida que a operação de loja própria avança
+          (plataforma + logística, ressalva do Stage 01), parte do tráfego que o IG hoje empurra pode ser melhor
+          aproveitado em conversão direta — mas isso é movimento estrutural do cliente, não meta de campanha.
+          Continuar fortalecendo o IG como canal de marca é o caminho correto.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 03.5 — GEN Z · ALAVANCA DE CRESCIMENTO
+========================================= -->
+<section class="stage" id="genz">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 03.5 · ALAVANCA DE CRESCIMENTO</div>
+      <h2 class="stage__title">GEN Z · <em>O VETOR DE GROWTH ATÉ 2030</em></h2>
+      <p class="stage__sub">
+        Os consumidores nascidos entre 1997 e 2012 representam a geração que mais valoriza
+        colecionismo, edições limitadas e objeto físico como statement cultural — a mesma onda
+        que ressuscitou vinil, fitas e câmeras analógicas. Para a Gamer Hut, é o
+        <strong style="color: var(--c-white);">vetor mais estratégico de crescimento e expansão</strong>
+        no horizonte 2026–2030.
+      </p>
+    </div>
+
+    <div class="grid grid-3" style="margin-bottom: var(--s-5);">
+      <div class="stat" style="border-color: rgba(74,222,128,.3);">
+        <div class="stat__label" style="color: var(--c-success);">GEN Z NO BRASIL</div>
+        <div class="stat__num" style="color: var(--c-success);">~30M</div>
+        <div class="stat__sub">14% da população · maior cohort gamer ativo</div>
+      </div>
+      <div class="stat" style="border-color: rgba(74,222,128,.3);">
+        <div class="stat__label" style="color: var(--c-success);">% QUE JOGAM REGULARMENTE</div>
+        <div class="stat__num" style="color: var(--c-success);">72%</div>
+        <div class="stat__sub">índice mais alto entre todas as gerações</div>
+      </div>
+      <div class="stat" style="border-color: rgba(255,194,122,.3);">
+        <div class="stat__label" style="color: var(--c-skin);">PREFEREM EDIÇÕES FÍSICAS</div>
+        <div class="stat__num" style="color: var(--c-skin);">58%</div>
+        <div class="stat__sub">vs digital · driver de colecionismo + scarcity</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card card--success">
+        <div class="card__eyebrow">POR QUE GEN Z É O VETOR</div>
+        <h4 class="card__title">Vintage Revival Cultural</h4>
+        <p class="card__body">
+          Gen Z lidera os movimentos de revalorização de objetos analógicos: vinil cresceu 10× na
+          última década, câmeras de filme voltaram a vender, fitas cassete ressurgiram. Mídia física
+          gamer entra na mesma onda — com a vantagem de ter um mercado de colecionismo já maduro.
+        </p>
+      </div>
+      <div class="card card--success">
+        <div class="card__eyebrow">DRIVERS DE COMPRA</div>
+        <h4 class="card__title">Scarcity, Storytelling, FOMO</h4>
+        <p class="card__body">
+          Gen Z compra por <em style="color: var(--c-skin); font-style: normal;">significado</em>:
+          edições limitadas, lore do produto, comunidade ao redor. Não é compra por preço — é compra
+          por pertencimento. A Gamer Hut já entrega isso (drops, pré-vendas, exclusivos) — falta só
+          posicionar a narrativa.
+        </p>
+      </div>
+      <div class="card card--success">
+        <div class="card__eyebrow">PLATAFORMAS NATIVAS</div>
+        <h4 class="card__title">Instagram Reels + TikTok</h4>
+        <p class="card__body">
+          Onde Gen Z passa o tempo é exatamente onde os top performers da Gamer Hut já performam
+          world-class (IR 9,2% no Crimson Desert). Não precisa migrar — precisa <em style="color: var(--c-success); font-style: normal;">amplificar</em>
+          o que já funciona com paid e produção em escala.
+        </p>
+      </div>
+      <div class="card card--success">
+        <div class="card__eyebrow">COMUNIDADE > COMMODITY</div>
+        <h4 class="card__title">Discord, Lore, Fanart</h4>
+        <p class="card__body">
+          Gen Z não é audiência passiva — é base ativa que cria conteúdo. Discord, threads, fanart,
+          remix. Para a Gamer Hut, isso significa CAC mais baixo por advocacy e LTV mais alto por
+          recompra emocional.
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top: var(--s-5); padding: var(--s-5); background: linear-gradient(135deg, rgba(255,194,122,.08) 0%, var(--c-jet) 70%); border-left: 4px solid var(--c-skin);">
+      <div class="arcade" style="font-size: 9px; color: var(--c-skin); letter-spacing: .22em; margin-bottom: var(--s-3);">
+        ◢ COMO GEN Z ATRAVESSA O PLANO
+      </div>
+      <div class="table-wrap" style="margin: 0;">
+        <table class="tbl" style="font-size: 14px;">
+          <thead>
+            <tr><th>Frente</th><th>Como Gen Z entra</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Frente 01 · Marca</strong></td>
+              <td>Tom alinhado a Gen Z sem perder a base atual · estética retrô-premium · linguagem direta</td>
+            </tr>
+            <tr>
+              <td><strong>Frente 02 · Conteúdo</strong></td>
+              <td>Aposta dobrada em short-form vídeo (Reels/TikTok) · 60% do orçamento de conteúdo</td>
+            </tr>
+            <tr>
+              <td><strong>Frente 03 · Game Shack</strong></td>
+              <td>Talento na frente das câmeras com perfil Gen Z · roteiros com lore e referência</td>
+            </tr>
+            <tr>
+              <td><strong>Frente 05 · B2B Publishers</strong></td>
+              <td>Pitch usa Gen Z como argumento principal · publishers querem chegar nessa geração</td>
+            </tr>
+            <tr style="background: rgba(184,35,42,.06);">
+              <td><strong>Tese de Exit</strong></td>
+              <td>Audiência majoritariamente Gen Z aumenta valuation no múltiplo (M&amp;A 2030)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="small text-cool" style="margin-top: var(--s-3); font-style: italic;">
+      <strong class="text-skin">Fontes:</strong> IBGE Censo 2022 (estimativa pop. Gen Z brasileira),
+      Newzoo Global Games Market Report 2025 (% gamers por geração no Brasil), NPD/Circana
+      Entertainment Report 2025 (preferência por edições físicas em gaming). Os percentuais refletem
+      média do consumidor brasileiro Gen Z autodeclarado gamer.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 04 — PLANO DE AÇÃO TGT
+========================================= -->
+<section class="stage stage--alt" id="plano">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 04 · PLANO DE AÇÃO TGT</div>
+      <h2 class="stage__title">5 FRENTES, <em>EXECUÇÃO LIMPA</em></h2>
+      <p class="stage__sub">
+        Reorganizamos os 4 pilares do plano original em 5 frentes operacionais — cada uma com entregável,
+        responsável, métrica e prazo. Marca, conteúdo, conversão, B2B e operação.
+      </p>
+    </div>
+
+    <!-- ============== PERFORMANCE ATUAL · O QUE FUNCIONA ============== -->
+    <div style="background: linear-gradient(135deg, rgba(74,222,128,.08) 0%, var(--c-charcoal) 70%); border: 1px solid rgba(74,222,128,.3); border-left: 4px solid var(--c-success); padding: var(--s-5); margin-bottom: var(--s-6);">
+      <div class="arcade" style="font-size: 10px; letter-spacing: .22em; color: var(--c-success); margin-bottom: var(--s-3);">
+        ◢ PERFORMANCE ATUAL · O QUE A CALIBRAÇÃO REVELOU QUE ESTÁ FUNCIONANDO
+      </div>
+      <h3 style="font-family: var(--f-display); font-size: clamp(24px, 3.5vw, 36px); line-height: 1.1; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: var(--s-3);">
+        ANTES DE OLHAR PRA FRENTE, <em style="color: var(--c-success); font-style: normal;">RECONHECER O QUE JÁ ESTÁ ENTREGANDO</em>
+      </h3>
+      <p style="color: var(--c-cool); font-size: 15px; line-height: 1.6; max-width: 820px; margin-bottom: var(--s-4);">
+        Os dados auditados de Fev–Mai/26 mostram um cenário <strong style="color: var(--c-white);">saudável e em evolução</strong>.
+        Antes de propor mudanças, o documento reconhece o trabalho que já vem sendo feito —
+        é o ponto de partida da conversa estratégica.
+      </p>
+
+      <div class="grid grid-3">
+        <div class="stat" style="border-color: rgba(74,222,128,.3);">
+          <div class="stat__label" style="color: var(--c-success);">ENGAJAMENTO TOTAL</div>
+          <div class="stat__num" style="color: var(--c-success);">+641%</div>
+          <div class="stat__sub">99.732 interações no trimestre vs 13.457 anterior · audiência reagindo de verdade</div>
+        </div>
+        <div class="stat" style="border-color: rgba(74,222,128,.3);">
+          <div class="stat__label" style="color: var(--c-success);">RECEITA E-COMMERCE</div>
+          <div class="stat__num" style="color: var(--c-success);">+62%</div>
+          <div class="stat__sub">R$ 508.394 no trimestre · 750 novos compradores · AOV R$ 533</div>
+        </div>
+        <div class="stat" style="border-color: rgba(74,222,128,.3);">
+          <div class="stat__label" style="color: var(--c-success);">ROAS GOOGLE ADS</div>
+          <div class="stat__num" style="color: var(--c-success);">24×</div>
+          <div class="stat__sub">+89% vs período anterior · cada R$1 investido vira R$24 de receita</div>
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top: var(--s-3);">
+        <div class="stat" style="border-color: rgba(74,222,128,.3);">
+          <div class="stat__label" style="color: var(--c-success);">FOLLOWERS NOVOS</div>
+          <div class="stat__num stat__num--small" style="color: var(--c-success);">+19.114</div>
+          <div class="stat__sub">3 meses · CPF efetivo de R$ 0,70 · paid funcionando</div>
+        </div>
+        <div class="stat" style="border-color: rgba(74,222,128,.3);">
+          <div class="stat__label" style="color: var(--c-success);">ROAS GA4 GERAL</div>
+          <div class="stat__num stat__num--small" style="color: var(--c-success);">17,5×</div>
+          <div class="stat__sub">+269% vs anterior · operação digital saudável</div>
+        </div>
+        <div class="stat" style="border-color: rgba(74,222,128,.3);">
+          <div class="stat__label" style="color: var(--c-success);">CPM META</div>
+          <div class="stat__num stat__num--small" style="color: var(--c-success);">R$ 3,54</div>
+          <div class="stat__sub">−20% vs anterior · ficando mais eficiente</div>
+        </div>
+      </div>
+
+      <p style="color: var(--c-cool); font-size: 14px; line-height: 1.6; margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid rgba(255,255,255,.08); max-width: 820px;">
+        <strong style="color: var(--c-skin);">Tradução:</strong> a operação atual está entregando crescimento real, com paid eficiente
+        e tração de marca consolidada. <strong style="color: var(--c-white);">As 5 frentes do plano de ação não vêm para "consertar"
+        o que está quebrado — vêm para escalar o que já funciona</strong> e estruturar as camadas que estão
+        faltando (B2B, Shack, conversão direta, operação madura). Essa é a postura correta com o cliente:
+        reconhecer o trabalho, somar capacity, propor evolução.
+      </p>
+    </div>
+
+    <div class="grid grid-2">
+      <!-- FRENTE 1 -->
+      <div class="card card--accent">
+        <div class="card__eyebrow">FRENTE 01 · MARCA &amp; IDENTIDADE</div>
+        <h3 class="card__title">Operacionalizar o Brandbook</h3>
+        <p class="card__body">
+          Brandbook v.2026.07 entregue. Agora vira <strong>operação.</strong>
+        </p>
+        <div class="deliv mt-2">
+          <div class="deliv__title">Entregáveis</div>
+          <ul class="deliv__list">
+            <li>Templates editáveis (Figma) para Designer Jr replicar</li>
+            <li>Sonic logo Gamer Hut (deriva do engine 8-bit do brandbook)</li>
+            <li>Sticker pack WhatsApp + filtros AR Instagram (Q3)</li>
+            <li>Identidade visual Gamer Shack (sub-marca) — cores, type, mascotes</li>
+            <li>Manual de aplicação publisher (co-branding)</li>
+          </ul>
+        </div>
+        <div class="pills">
+          <span class="pill">RESP: Senior</span>
+          <span class="pill">PRAZO: Mai–Jul</span>
+          <span class="pill">KPI: 100% peças no padrão</span>
+        </div>
+      </div>
+
+      <!-- FRENTE 2 -->
+      <div class="card card--accent">
+        <div class="card__eyebrow">FRENTE 02 · CONTEÚDO STORE</div>
+        <h3 class="card__title">Feed que vende sem ser panfleto</h3>
+        <p class="card__body">
+          Aplicar os <strong>5 pilares editoriais</strong> já desenhados no brandbook.
+          Mix balanceado, captions com gancho, CTA rastreável.
+        </p>
+        <div class="deliv mt-2">
+          <div class="deliv__title">Entregáveis (mês)</div>
+          <ul class="deliv__list">
+            <li>16 posts Feed (Drop 35% · Review 20% · Tip 20% · Lore 15% · Resumo 10%)</li>
+            <li>40+ Stories (FlashSale + bastidores + repost cliente)</li>
+            <li>8 Reels (4 lançamento + 4 cultura/meme)</li>
+            <li>Cupons rastreáveis em todos os posts de venda</li>
+            <li>Resposta de comentários em &lt; 2h (janela algorítmica)</li>
+          </ul>
+        </div>
+        <div class="pills">
+          <span class="pill">RESP: Senior + Jr</span>
+          <span class="pill">PRAZO: Contínuo</span>
+          <span class="pill">KPI: Eng ≥1,8% · CTR ≥3%</span>
+        </div>
+      </div>
+
+      <!-- FRENTE 3 -->
+      <div class="card card--accent" style="border-left-color: var(--c-mario);">
+        <div class="card__eyebrow" style="color: var(--c-mario);">FRENTE 03 · CONTEÚDO SHACK <span style="background: var(--c-mario); color: var(--c-white); padding: 2px 6px; margin-left: 6px; font-size: 8px;">PROJETO NOVO</span></div>
+        <h3 class="card__title">Construir a marca de conteúdo do zero</h3>
+        <p class="card__body">
+          Shack <strong>não existe na operação hoje</strong> — é projeto inteiramente novo dentro do escopo TGT.
+          Por isso começa <strong>enxuto</strong>: prova de conceito antes de escalar. Foco em consistência
+          editorial e validação do formato Fluffy &amp; Grumpy.
+        </p>
+        <div class="deliv mt-2">
+          <div class="deliv__title">Entregáveis (mês, fase 1)</div>
+          <ul class="deliv__list">
+            <li>1 vídeo MFND/semana (YouTube principal — 4–6min)</li>
+            <li>4 Shorts/semana derivados do MFND principal</li>
+            <li>2 Reels TikTok cultura/meme/semana</li>
+            <li>Identidade Fluffy &amp; Grumpy (até Jul/26)</li>
+            <li>Discord da Shack ativo com cadência semanal</li>
+          </ul>
+        </div>
+        <div class="pills">
+          <span class="pill">RESP: Videomaker + Senior</span>
+          <span class="pill">PRAZO: Piloto Jul/26</span>
+          <span class="pill">KPI: Custo/visualização</span>
+        </div>
+      </div>
+
+      <!-- FRENTE 4 -->
+      <div class="card card--accent">
+        <div class="card__eyebrow">FRENTE 04 · CONVERSÃO &amp; LOJA PRÓPRIA</div>
+        <h3 class="card__title">Reduzir dependência de marketplace</h3>
+        <p class="card__body">
+          O KPI mais importante para o exit. Toda peça da Store deve ter
+          <strong>caminho rastreável até o site próprio.</strong>
+        </p>
+        <div class="deliv mt-2">
+          <div class="deliv__title">Entregáveis</div>
+          <ul class="deliv__list">
+            <li>Pixel + UTM tracking em 100% dos links de bio/CTA</li>
+            <li>Funil Telegram + WhatsApp como canal de oferta exclusiva</li>
+            <li>Programa de fidelidade Hut Gold (estudo + piloto Q3)</li>
+            <li>Dashboard de share of revenue por canal (mensal)</li>
+            <li>Email mkt para base própria (Mailchimp ou similar)</li>
+          </ul>
+        </div>
+        <div class="pills">
+          <span class="pill">RESP: Account + Senior</span>
+          <span class="pill">PRAZO: Contínuo</span>
+          <span class="pill">KPI: 14% via loja Dez/26</span>
+        </div>
+      </div>
+
+      <!-- FRENTE 5 -->
+      <div class="card card--accent">
+        <div class="card__eyebrow">FRENTE 05 · B2B &amp; PUBLISHERS</div>
+        <h3 class="card__title">Estruturar o pitch B2B</h3>
+        <p class="card__body">
+          Tiers definidos no plano original são sólidos. Falta o ativo de venda — <strong>pitch deck profissional</strong> +
+          one-pager + dashboard de prova social.
+        </p>
+        <div class="deliv mt-2">
+          <div class="deliv__title">Entregáveis</div>
+          <ul class="deliv__list">
+            <li>Pitch deck publisher (PT + EN) — 12 slides, dados reais</li>
+            <li>One-pager com tiers, ativos disponíveis, contato</li>
+            <li>Dashboard PowerBI de campanha (template) — para mostrar ROI</li>
+            <li>Lista de prospect (Sony, Nintendo, Xbox + 6 third-parties)</li>
+            <li>Calendário de pitch (1–2 reuniões/mês a partir de Jun)</li>
+          </ul>
+        </div>
+        <div class="pills">
+          <span class="pill">RESP: Account + GH Comercial</span>
+          <span class="pill">PRAZO: Pitch deck Mai · Pitchs Jun+</span>
+          <span class="pill">KPI: 1–2 BRONZE Out</span>
+        </div>
+      </div>
+
+      <!-- FRENTE 6 -->
+      <div class="card card--accent">
+        <div class="card__eyebrow">FRENTE 06 · OPERAÇÃO &amp; DADOS</div>
+        <h3 class="card__title">Profissionalizar o ciclo</h3>
+        <p class="card__body">
+          Sem rotina, vira reativo. Sem dado, vira opinião.
+          <strong>Cadência fixa + dashboard quinzenal.</strong>
+        </p>
+        <div class="deliv mt-2">
+          <div class="deliv__title">Entregáveis</div>
+          <ul class="deliv__list">
+            <li>Monday.com como sistema de aprovação e briefing</li>
+            <li>Relatório mensal (até dia 5) — KPIs + insights</li>
+            <li>War room quinzenal GH × TGT (1h) com agenda fixa</li>
+            <li>Template de briefing publisher e demanda extraordinária</li>
+            <li>Documentação de tudo (lições, decisões, performance)</li>
+          </ul>
+        </div>
+        <div class="pills">
+          <span class="pill">RESP: Account</span>
+          <span class="pill">PRAZO: Mai/26 implementado</span>
+          <span class="pill">KPI: 100% briefings via Monday</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 05 — MODELO HUB
+========================================= -->
+<section class="stage" id="hub">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 05 · MODELO OPERACIONAL HUB</div>
+      <h2 class="stage__title">FLUXO ROTINA + <em>FLUXO EXTRAORDINÁRIO</em></h2>
+      <p class="stage__sub">
+        O cliente tem perfil de trazer demandas em cima da hora — e isso é normal em varejo de games
+        (drop surpresa, evento de publisher, bug viral). O HUB resolve com duas trilhas paralelas:
+        rotina protegida + capacity reservada para extraordinário.
+      </p>
+    </div>
+
+    <h3 class="arcade text-orange" style="font-size: 11px; margin-bottom: var(--s-2);">
+      ◢ FLUXO ROTINA · SEMANAL
+    </h3>
+    <div class="flow">
+      <div class="flow__step">
+        <div class="flow__day">SEG · 9–11h</div>
+        <div class="flow__title">Briefing</div>
+        <div class="flow__desc">
+          GH alinha pauta da semana. TGT documenta no Monday.
+          Reunião 30min · Account conduz.
+        </div>
+      </div>
+      <div class="flow__step">
+        <div class="flow__day">TER + QUA</div>
+        <div class="flow__title">Produção</div>
+        <div class="flow__desc">
+          Senior dirige criativo. Jr executa templates.
+          Videomaker grava/edita Shack. Designer entrega artes para revisão.
+        </div>
+      </div>
+      <div class="flow__step">
+        <div class="flow__day">QUI · até 12h</div>
+        <div class="flow__title">Aprovação</div>
+        <div class="flow__desc">
+          GH revisa pacote semanal no Monday.
+          Ajustes pontuais até 16h. Consolidação até 18h.
+        </div>
+      </div>
+      <div class="flow__step">
+        <div class="flow__day">SEX</div>
+        <div class="flow__title">Publicação</div>
+        <div class="flow__desc">
+          Lançamento da semana (Store). Vídeo Shack ao vivo. Series MFND no YouTube.
+          Comunicação rastreável.
+        </div>
+      </div>
+      <div class="flow__step">
+        <div class="flow__day">SEG SEGUINTE</div>
+        <div class="flow__title">Relatório &amp; Loop</div>
+        <div class="flow__desc">
+          Performance da semana anterior + briefing nova semana.
+          Loop de aprendizado.
+        </div>
+      </div>
+    </div>
+
+    <h3 class="arcade text-orange" style="font-size: 11px; margin-bottom: var(--s-2); margin-top: var(--s-6);">
+      ⚡ FLUXO EXTRAORDINÁRIO · DEMANDA NÃO-PLANEJADA
+    </h3>
+
+    <div class="grid grid-3 mt-2">
+      <div class="card card--warning">
+        <div class="card__eyebrow">CATEGORIA A · URGENTE</div>
+        <h4 class="card__title" style="font-size: 18px;">Mesmo dia / 24h</h4>
+        <p class="card__body small">
+          <strong>Quando:</strong> evento ao vivo, drop surpresa publisher, bug viral.
+        </p>
+        <p class="card__body small mt-1">
+          <strong>SLA TGT:</strong> resposta em 2h, entrega em 24h.
+          Account aciona Senior + Jr. Capacity reservada de <strong>10h/mês</strong> exclusiva.
+        </p>
+        <p class="card__body small mt-1">
+          <strong>Limite:</strong> 2 demandas tipo A por mês incluídas no fee. Acima disso, hora extra
+          a R$ 180/h (Jr) ou R$ 280/h (Sr).
+        </p>
+      </div>
+
+      <div class="card card--info">
+        <div class="card__eyebrow">CATEGORIA B · MÉDIA URGÊNCIA</div>
+        <h4 class="card__title" style="font-size: 18px;">3–5 dias úteis</h4>
+        <p class="card__body small">
+          <strong>Quando:</strong> nova oportunidade publisher, peça extra de campanha,
+          ajuste estratégico.
+        </p>
+        <p class="card__body small mt-1">
+          <strong>Fluxo:</strong> entra na próxima sprint via briefing formal Monday.
+          Senior estima esforço, Account aprova com cliente.
+        </p>
+        <p class="card__body small mt-1">
+          <strong>Capacity:</strong> 20h/mês reservadas — sem custo extra dentro do limite.
+        </p>
+      </div>
+
+      <div class="card card--success">
+        <div class="card__eyebrow">CATEGORIA C · ESTRATÉGICA</div>
+        <h4 class="card__title" style="font-size: 18px;">2–4 semanas</h4>
+        <p class="card__body small">
+          <strong>Quando:</strong> projeto novo (sonic logo, sticker pack, evento BGS,
+          campanha publisher).
+        </p>
+        <p class="card__body small mt-1">
+          <strong>Fluxo:</strong> war room quinzenal pauta, Senior monta proposta,
+          aprova prazo e escopo, entra no roadmap trimestral.
+        </p>
+        <p class="card__body small mt-1">
+          <strong>Capacity:</strong> dentro do mix mensal. Projetos &gt; 40h, orçamento à parte.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout__label">PROTEÇÃO DA ROTINA</div>
+      <div class="callout__text">
+        DEMANDA EXTRAORDINÁRIA <em>NÃO PARA</em> A ROTINA.
+        <em>SÃO TRILHAS PARALELAS</em>, NÃO CONCORRENTES.
+      </div>
+      <div class="callout__sub">
+        Hoje, quando o cliente traz demanda surpresa, a agência absorve do plano semanal e a qualidade
+        cai nos dois. Com capacity reservada e SLA claro, ambos os fluxos rodam — e o cliente sabe
+        exatamente quando esperar o quê.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 06 — TIME E HORAS
+========================================= -->
+<section class="stage stage--alt" id="time">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 06 · TIME &amp; CAPACITY</div>
+      <h2 class="stage__title">DE 125H PARA <em>330H/MÊS</em></h2>
+      <p class="stage__sub">
+        Hoje a TGT atende a Gamer Hut com <strong style="color: var(--c-white);">~125h/mês cobrindo 100% das frentes</strong> — Store,
+        atendimento, monitoramento, relatório. Shack ainda não existe na operação. O modelo proposto
+        <strong style="color: var(--c-white);">multiplica capacity por 2,6×</strong>, abre espaço para Shack como
+        produto novo e adiciona reserva de capacity para extraordinário.
+      </p>
+    </div>
+
+    <h3 class="arcade text-orange" style="font-size: 11px; margin-bottom: var(--s-3);">
+      ◢ COMPARATIVO HORAS / MÊS
+    </h3>
+
+    <div class="card mb-4">
+      <div class="team-bar">
+        <div class="team-bar__label">
+          Account
+          <span class="team-bar__role">Estratégia · briefing · publishers · relatório</span>
+        </div>
+        <div class="team-bar__track">
+          <div class="team-bar__fill team-bar__fill--current" style="width: 36%;">50h HOJE</div>
+        </div>
+        <div class="team-bar__delta">→</div>
+      </div>
+      <div class="team-bar">
+        <div class="team-bar__label" style="opacity: 0;">.</div>
+        <div class="team-bar__track">
+          <div class="team-bar__fill" style="width: 43%;">60h NOVO</div>
+        </div>
+        <div class="team-bar__delta">+10h</div>
+      </div>
+
+      <div class="team-bar mt-3">
+        <div class="team-bar__label">
+          Designer/Analista Senior
+          <span class="team-bar__role">Direção criativa · Store + (novo) Shack · publisher · pitch</span>
+        </div>
+        <div class="team-bar__track">
+          <div class="team-bar__fill team-bar__fill--current" style="width: 47%;">65h HOJE</div>
+        </div>
+        <div class="team-bar__delta">→</div>
+      </div>
+      <div class="team-bar">
+        <div class="team-bar__label" style="opacity: 0;">.</div>
+        <div class="team-bar__track">
+          <div class="team-bar__fill" style="width: 65%;">90h NOVO</div>
+        </div>
+        <div class="team-bar__delta">+25h</div>
+      </div>
+
+      <div class="team-bar mt-3">
+        <div class="team-bar__label">
+          Conteúdo (redator + estrategista)
+          <span class="team-bar__role">Hoje contratado fora · pago à parte pelo cliente</span>
+        </div>
+        <div class="team-bar__track">
+          <div class="team-bar__fill team-bar__fill--current" style="width: 7%; background: rgba(225,37,27,.4); color: var(--c-white);">10h HOJE (FORA)</div>
+        </div>
+        <div class="team-bar__delta">→</div>
+      </div>
+
+      <div class="team-bar mt-3">
+        <div class="team-bar__label">
+          Designer/Analista Jr
+          <span class="team-bar__role">Volume de Store · templates · stories · monitoring · conteúdo</span>
+        </div>
+        <div class="team-bar__track">
+          <div class="team-bar__fill team-bar__fill--current" style="width: 0%;">0h HOJE</div>
+        </div>
+        <div class="team-bar__delta">→</div>
+      </div>
+      <div class="team-bar">
+        <div class="team-bar__label" style="opacity: 0;">.</div>
+        <div class="team-bar__track">
+          <div class="team-bar__fill" style="width: 100%;">140h NOVO</div>
+        </div>
+        <div class="team-bar__delta team-bar__delta--new">+140h</div>
+      </div>
+
+      <div class="team-bar mt-3">
+        <div class="team-bar__label">
+          Videomaker
+          <span class="team-bar__role">Shack (novo escopo) · Reels · Shorts · YouTube · captação</span>
+        </div>
+        <div class="team-bar__track">
+          <div class="team-bar__fill team-bar__fill--current" style="width: 0%;">0h HOJE</div>
+        </div>
+        <div class="team-bar__delta">→</div>
+      </div>
+      <div class="team-bar">
+        <div class="team-bar__label" style="opacity: 0;">.</div>
+        <div class="team-bar__track">
+          <div class="team-bar__fill" style="width: 29%;">40h NOVO</div>
+        </div>
+        <div class="team-bar__delta team-bar__delta--new">+40h</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="stat">
+        <div class="stat__label">CAPACITY HOJE</div>
+        <div class="stat__num stat__num--white">~125h</div>
+        <div class="stat__sub">2 pessoas TGT (Account + Sr) + conteúdo terceirizado · cobrindo só Store · Shack ainda não existe</div>
+      </div>
+      <div class="stat">
+        <div class="stat__label">CAPACITY PROPOSTO</div>
+        <div class="stat__num">330h</div>
+        <div class="stat__sub">4 pessoas integradas (Account + Sr + Jr + Videomaker) · <strong class="text-orange">2,64×</strong> mais entregas · Store + Shack + B2B + extraordinário</div>
+      </div>
+    </div>
+
+    <h3 class="arcade text-orange" style="font-size: 11px; margin-top: var(--s-6); margin-bottom: var(--s-3);">
+      ◢ COMO A CAPACITY É APLICADA
+    </h3>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card__eyebrow">DIVISÃO POR FRENTE</div>
+        <table class="tbl mt-1">
+          <thead>
+            <tr><th>Frente</th><th>Horas/mês</th><th>%</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Store · Conteúdo &amp; ads (escopo atual ampliado)</td><td class="mono">130h</td><td>39%</td></tr>
+            <tr><td>Shack · Conteúdo audiovisual (NOVO)</td><td class="mono">70h</td><td>21%</td></tr>
+            <tr><td>Loja própria · CRO &amp; tracking</td><td class="mono">35h</td><td>11%</td></tr>
+            <tr><td>B2B · Pitch e relacionamento publisher</td><td class="mono">35h</td><td>11%</td></tr>
+            <tr><td>Operação · Briefing, relatório, dashboard</td><td class="mono">30h</td><td>9%</td></tr>
+            <tr><td>Reserva · Extraordinário (Cat A + B)</td><td class="mono">30h</td><td>9%</td></tr>
+            <tr style="background: rgba(242,102,65,.05);"><td><strong>TOTAL</strong></td><td class="mono"><strong>330h</strong></td><td><strong>100%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card__eyebrow">PERFIL DE CADA PAPEL</div>
+        <div class="mt-2">
+          <h4 style="font-family: var(--f-display); font-size: 16px; color: var(--c-orange); text-transform: uppercase;">Account · 60h</h4>
+          <p class="small text-cool">Estratégia, planejamento, briefings, war room, relatório executivo, condução de pitch publisher, alinhamento sênior com cliente.</p>
+        </div>
+        <div class="mt-2">
+          <h4 style="font-family: var(--f-display); font-size: 16px; color: var(--c-orange); text-transform: uppercase;">Designer Sr · 90h</h4>
+          <p class="small text-cool">Direção criativa, peças-chave (campanha, pitch, eventos), curadoria do que o Jr produz, identidade visual Shack, co-branding publisher.</p>
+        </div>
+        <div class="mt-2">
+          <h4 style="font-family: var(--f-display); font-size: 16px; color: var(--c-orange); text-transform: uppercase;">Designer Jr · 140h <span style="color: var(--c-success); font-size: 11px;">NOVO</span></h4>
+          <p class="small text-cool">Volume diário de Store (Feed, Stories, Reels), aplicação de templates, monitoramento de comentários, edição leve, redação de copy do dia, entrega de pacote semanal.</p>
+        </div>
+        <div class="mt-2">
+          <h4 style="font-family: var(--f-display); font-size: 16px; color: var(--c-orange); text-transform: uppercase;">Videomaker · 40h <span style="color: var(--c-success); font-size: 11px;">NOVO</span></h4>
+          <p class="small text-cool">Captação Fluffy &amp; Grumpy (Shack), edição da série MFND, derivação Shorts/Reels, motion da Store em momentos-chave (BGS, Black Friday, lançamentos).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 06.5 — PRIMEIRAS ENTREGAS · PRÉVIA DO ESCOPO
+========================================= -->
+<section class="stage" id="entregas">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 06.5 · PRIMEIRAS ENTREGAS</div>
+      <h2 class="stage__title">VOCÊS NÃO COMEÇAM DO ZERO · <em>3 ARTEFATOS PRA REFINAR</em></h2>
+      <p class="stage__sub">
+        Antes da Gamer Hut assinar qualquer coisa, a TGT já construiu três artefatos com a marca em mente.
+        Não são versões finais — são <strong style="color: var(--c-white);">primeiras versões prontas pra
+        co-criação no mês 01</strong>. A intenção é demonstrar velocidade de execução e disposição pra refinar em parceria.
+      </p>
+    </div>
+
+    <div class="grid grid-3" style="margin-bottom: var(--s-5);">
+      <!-- BRAND BOOK -->
+      <div style="background: var(--c-jet); border: 1px solid rgba(255,255,255,.08); border-top: 4px solid var(--c-orange); padding: var(--s-4); display: flex; flex-direction: column;">
+        <div class="arcade" style="font-size: 9px; color: var(--c-orange); letter-spacing: .22em; margin-bottom: 12px;">
+          ◢ ENTREGA 01 · IDENTIDADE VISUAL
+        </div>
+        <h3 style="font-family: var(--f-display); font-size: 28px; text-transform: uppercase; line-height: 1; margin-bottom: 12px;">Brand Book</h3>
+        <p style="color: var(--c-cool); font-size: 14px; line-height: 1.5; margin-bottom: 16px;">
+          <strong style="color: var(--c-skin);">PRIMEIRA VERSÃO</strong> · 22 capítulos cobrindo identidade visual,
+          paleta, tipografia, voz, aplicações físicas e co-branding com publishers. Construído pela TGT
+          com a essência da marca como referência. <strong style="color: var(--c-white);">Pronta pra
+          co-criação no mês 01.</strong>
+        </p>
+        <ul style="list-style: none; padding: 0; margin: 0 0 16px 0; font-size: 13px; flex: 1;">
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ 22 capítulos de identidade visual</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Paleta + tipografia documentadas</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ 18 ícones SVG + 6 patterns</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Co-branding com 9 publishers</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ 6 aplicações físicas mockadas</li>
+        </ul>
+        <a href="https://gamer-hut.vercel.app" target="_blank" rel="noopener noreferrer"
+           style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: var(--c-orange); color: var(--c-black); font-family: var(--f-display); font-size: 14px; text-transform: uppercase; letter-spacing: .02em; text-decoration: none; transition: all .2s;">
+          <span>ABRIR BRAND BOOK</span><span>↗</span>
+        </a>
+      </div>
+
+      <!-- SOCIAL PLAN -->
+      <div style="background: var(--c-jet); border: 1px solid rgba(255,255,255,.08); border-top: 4px solid var(--c-sonic); padding: var(--s-4); display: flex; flex-direction: column;">
+        <div class="arcade" style="font-size: 9px; color: var(--c-sonic); letter-spacing: .22em; margin-bottom: 12px;">
+          ◢ ENTREGA 02 · PLANO DE CONTEÚDO
+        </div>
+        <h3 style="font-family: var(--f-display); font-size: 28px; text-transform: uppercase; line-height: 1; margin-bottom: 12px;">Social Plan</h3>
+        <p style="color: var(--c-cool); font-size: 14px; line-height: 1.5; margin-bottom: 16px;">
+          <strong style="color: var(--c-skin);">PRIMEIRA VERSÃO</strong> do plano editorial: pilares, templates,
+          calendário base, tom de voz por canal e referências de mix por categoria de jogo.
+          <strong style="color: var(--c-white);">Pronta pra calibrar com o time GH.</strong>
+        </p>
+        <ul style="list-style: none; padding: 0; margin: 0 0 16px 0; font-size: 13px; flex: 1;">
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ 5 pilares editoriais</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Templates replicáveis</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Tom de voz por canal</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Calendário Q3 mapeado</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Mix por categoria de jogo</li>
+        </ul>
+        <a href="https://ghsocial.vercel.app" target="_blank" rel="noopener noreferrer"
+           style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: var(--c-sonic); color: var(--c-white); font-family: var(--f-display); font-size: 14px; text-transform: uppercase; letter-spacing: .02em; text-decoration: none; transition: all .2s;">
+          <span>ABRIR SOCIAL PLAN</span><span>↗</span>
+        </a>
+      </div>
+
+      <!-- PLANO DE AÇÃO -->
+      <div style="background: var(--c-jet); border: 1px solid rgba(255,255,255,.08); border-top: 4px solid var(--c-success); padding: var(--s-4); display: flex; flex-direction: column;">
+        <div class="arcade" style="font-size: 9px; color: var(--c-success); letter-spacing: .22em; margin-bottom: 12px;">
+          ◢ ENTREGA 03 · ESTRATÉGIA OPERACIONAL
+        </div>
+        <h3 style="font-family: var(--f-display); font-size: 28px; text-transform: uppercase; line-height: 1; margin-bottom: 12px;">Plano de Ação 2026</h3>
+        <p style="color: var(--c-cool); font-size: 14px; line-height: 1.5; margin-bottom: 16px;">
+          <strong style="color: var(--c-skin);">ESTE DOCUMENTO.</strong> Calibração de 10+ métricas com dados oficiais,
+          tese de valuation, 5 frentes operacionais, modelo HUB, roadmap Q2–Q4 2026.
+          <strong style="color: var(--c-white);">Anexo do contrato.</strong>
+        </p>
+        <ul style="list-style: none; padding: 0; margin: 0 0 16px 0; font-size: 13px; flex: 1;">
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Calibração com dados oficiais</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Tese de valuation 2030</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ 5 frentes operacionais</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Modelo HUB · 330h/mês</li>
+          <li style="padding: 4px 0; color: var(--c-cool);">◢ Roadmap Q2–Q4 2026</li>
+        </ul>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: rgba(74,222,128,.15); border: 1px solid var(--c-success); color: var(--c-success); font-family: var(--f-display); font-size: 13px; text-transform: uppercase; letter-spacing: .02em;">
+          <span>★</span><span>VOCÊ ESTÁ AQUI</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: var(--s-4); background: linear-gradient(135deg, rgba(255,194,122,.08) 0%, transparent 70%); border-left: 4px solid var(--c-skin);">
+      <p style="font-family: var(--f-display); font-size: clamp(22px, 2.6vw, 32px); line-height: 1.2; text-transform: uppercase; letter-spacing: -0.01em; color: var(--c-white); margin: 0;">
+        ANTES DO SIM, <em style="color: var(--c-skin); font-style: normal;">JÁ TEMOS 3 ENTREGAS</em> NA MÃO.
+        <em style="color: var(--c-skin); font-style: normal;">DIA 1 NÃO É DIA ZERO.</em>
+      </p>
+    </div>
+
+    <p class="small text-cool" style="margin-top: var(--s-4); font-style: italic;">
+      <strong class="text-skin">Posicionamento honesto:</strong> os 2 sites são primeiras versões criadas
+      especificamente para esta apresentação. NÃO estão em uso operacional pelo cliente. A intenção é
+      demonstrar velocidade de execução + disposição pra refinamento conjunto a partir do mês 01.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 07 — FEE / FATURAMENTO
+========================================= -->
+<section class="stage" id="fee">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 07 · MODELO COMERCIAL</div>
+      <h2 class="stage__title">FEE TGT · <em>O QUE MUDA E POR QUÊ</em></h2>
+      <p class="stage__sub">
+        O ponto principal desta seção é uma reorganização do escopo que <strong style="color: var(--c-white);">reduz o
+        custo total que o cliente paga em marketing</strong>, ao mesmo tempo que <strong style="color: var(--c-white);">multiplica
+        a capacity por 2,6×</strong>. Acontece porque internalizamos serviços que hoje são pagos fora da TGT
+        e diluímos o custo do time num modelo mais eficiente.
+      </p>
+    </div>
+
+    <!-- DESTAQUE PRINCIPAL: Economia escondida -->
+    <div style="background: linear-gradient(135deg, rgba(74,222,128,.08) 0%, var(--c-jet) 80%); border: 2px solid var(--c-success); padding: var(--s-5); margin-bottom: var(--s-5);">
+      <div class="arcade" style="font-size: 10px; letter-spacing: .22em; color: var(--c-success); margin-bottom: var(--s-2);">
+        ◢ A LEITURA QUE IMPORTA · CUSTO TOTAL DE MARKETING
+      </div>
+      <h3 style="font-family: var(--f-display); font-size: clamp(28px, 4vw, 40px); line-height: 1.1; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: var(--s-3);">
+        CLIENTE PAGA <em style="color: var(--c-success); font-style: normal;">MENOS</em> NO CONSOLIDADO E
+        GANHA <em style="color: var(--c-success); font-style: normal;">200H+</em> DE CAPACITY
+      </h3>
+      <p style="color: var(--c-cool); font-size: 16px; line-height: 1.6; max-width: 800px; margin-bottom: var(--s-4);">
+        Hoje, além do fee TGT, a Gamer Hut contrata <strong style="color: var(--c-white);">conteúdo (R$ 3,5K/mês)</strong>
+        e <strong style="color: var(--c-white);">digital listening (R$ 0,7K/mês)</strong> com fornecedores externos.
+        No novo modelo, esses serviços viram parte do escopo TGT — sem custo adicional.
+      </p>
+
+      <div class="grid grid-2" style="gap: var(--s-3);">
+        <!-- Cenário Hoje (custo real total) -->
+        <div style="background: rgba(255,255,255,.03); border-left: 3px solid var(--c-cool); padding: var(--s-3);">
+          <div class="arcade" style="font-size: 9px; color: var(--c-cool); letter-spacing: .22em; margin-bottom: var(--s-2);">CENÁRIO ATUAL · CUSTO REAL</div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px dashed rgba(255,255,255,.08);">
+              <td style="padding: 8px 0; color: var(--c-cool); font-size: 14px;">Fee TGT (bruto)</td>
+              <td style="padding: 8px 0; text-align: right; color: var(--c-white); font-family: var(--f-mono); font-size: 14px;">R$ 6.800</td>
+            </tr>
+            <tr style="border-bottom: 1px dashed rgba(255,255,255,.08);">
+              <td style="padding: 8px 0; color: var(--c-cool); font-size: 14px;">Conteúdo (fornecedor externo)</td>
+              <td style="padding: 8px 0; text-align: right; color: var(--c-white); font-family: var(--f-mono); font-size: 14px;">R$ 3.500</td>
+            </tr>
+            <tr style="border-bottom: 1px dashed rgba(255,255,255,.08);">
+              <td style="padding: 8px 0; color: var(--c-cool); font-size: 14px;">Digital listening (fornecedor externo)</td>
+              <td style="padding: 8px 0; text-align: right; color: var(--c-white); font-family: var(--f-mono); font-size: 14px;">R$ 700</td>
+            </tr>
+            <tr style="border-top: 2px solid var(--c-cool);">
+              <td style="padding: 12px 0; color: var(--c-white); font-family: var(--f-display); font-size: 14px; text-transform: uppercase;">Total custo marketing</td>
+              <td style="padding: 12px 0; text-align: right; color: var(--c-white); font-family: var(--f-display); font-size: 24px;">R$ 11.000</td>
+            </tr>
+          </table>
+          <p style="color: var(--c-cool); font-size: 12px; margin-top: var(--s-2); padding-top: var(--s-2); border-top: 1px solid rgba(255,255,255,.06);">
+            <strong style="color: var(--c-white);">Capacity:</strong> ~125h TGT + serviços terceirizados<br>
+            <strong style="color: var(--c-white);">Coordenação:</strong> três fornecedores diferentes a alinhar
+          </p>
+        </div>
+
+        <!-- Cenário Novo (custo real total) -->
+        <div style="background: rgba(74,222,128,.05); border-left: 3px solid var(--c-success); padding: var(--s-3);">
+          <div class="arcade" style="font-size: 9px; color: var(--c-success); letter-spacing: .22em; margin-bottom: var(--s-2);">CENÁRIO PROPOSTO · CUSTO REAL</div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px dashed rgba(255,255,255,.08);">
+              <td style="padding: 8px 0; color: var(--c-cool); font-size: 14px;">Fee TGT (bruto, tudo incluso)</td>
+              <td style="padding: 8px 0; text-align: right; color: var(--c-white); font-family: var(--f-mono); font-size: 14px;">R$ 10.250</td>
+            </tr>
+            <tr style="border-bottom: 1px dashed rgba(255,255,255,.08);">
+              <td style="padding: 8px 0; color: var(--c-success); font-size: 14px;">Conteúdo · <em>incluso no fee</em></td>
+              <td style="padding: 8px 0; text-align: right; color: var(--c-success); font-family: var(--f-mono); font-size: 14px;">— R$ 0</td>
+            </tr>
+            <tr style="border-bottom: 1px dashed rgba(255,255,255,.08);">
+              <td style="padding: 8px 0; color: var(--c-success); font-size: 14px;">Digital listening · <em>incluso no fee</em></td>
+              <td style="padding: 8px 0; text-align: right; color: var(--c-success); font-family: var(--f-mono); font-size: 14px;">— R$ 0</td>
+            </tr>
+            <tr style="border-top: 2px solid var(--c-success);">
+              <td style="padding: 12px 0; color: var(--c-white); font-family: var(--f-display); font-size: 14px; text-transform: uppercase;">Total custo marketing</td>
+              <td style="padding: 12px 0; text-align: right; color: var(--c-success); font-family: var(--f-display); font-size: 24px;">R$ 10.250</td>
+            </tr>
+          </table>
+          <p style="color: var(--c-cool); font-size: 12px; margin-top: var(--s-2); padding-top: var(--s-2); border-top: 1px solid rgba(255,255,255,.06);">
+            <strong style="color: var(--c-white);">Capacity:</strong> 330h integradas (Account + Sr + Jr + Videomaker)<br>
+            <strong style="color: var(--c-white);">Coordenação:</strong> ponto único TGT, sem fornecedor a gerenciar
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: var(--s-4); padding: var(--s-3); background: rgba(0,0,0,.4); border-left: 4px solid var(--c-orange); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s-3);">
+        <div>
+          <div class="arcade" style="font-size: 8px; color: var(--c-orange); letter-spacing: .2em; margin-bottom: 4px;">ECONOMIA NO CONSOLIDADO</div>
+          <div style="font-family: var(--f-display); font-size: 36px; color: var(--c-success); line-height: 1;">— R$ 750</div>
+          <p style="color: var(--c-cool); font-size: 12px; margin-top: 4px;">Por mês · R$ 18K/ano</p>
+        </div>
+        <div>
+          <div class="arcade" style="font-size: 8px; color: var(--c-orange); letter-spacing: .2em; margin-bottom: 4px;">CAPACITY ADICIONAL</div>
+          <div style="font-family: var(--f-display); font-size: 36px; color: var(--c-orange); line-height: 1;">+ 205h</div>
+          <p style="color: var(--c-cool); font-size: 12px; margin-top: 4px;">Por mês · 2,64× a operação atual</p>
+        </div>
+        <div>
+          <div class="arcade" style="font-size: 8px; color: var(--c-orange); letter-spacing: .2em; margin-bottom: 4px;">FORNECEDORES A GERENCIAR</div>
+          <div style="font-family: var(--f-display); font-size: 36px; color: var(--c-skin); line-height: 1;">3 → 1</div>
+          <p style="color: var(--c-cool); font-size: 12px; margin-top: 4px;">Ponto único de responsabilidade</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="arcade text-orange" style="font-size: 11px; margin-bottom: var(--s-3);">
+      ◢ DETALHAMENTO DOS NÚMEROS
+    </h3>
+
+    <div class="grid grid-3">
+      <div class="price-card">
+        <div class="price-card__label">CENÁRIO ATUAL · TGT</div>
+        <h3 class="price-card__title">Hoje</h3>
+        <div class="price-card__num">R$ 6,8K<small>/mês bruto</small></div>
+        <div class="small text-cool" style="margin-bottom: var(--s-3);">R$ 5,5K líquido · + success fee</div>
+        <div class="price-card__line"><strong>Account:</strong> 50h</div>
+        <div class="price-card__line"><strong>Sr Designer:</strong> 65h</div>
+        <div class="price-card__line"><strong>Jr Designer:</strong> 0h</div>
+        <div class="price-card__line"><strong>Videomaker:</strong> 0h</div>
+        <div class="price-card__line"><strong>Conteúdo:</strong> Fora do escopo</div>
+        <div class="price-card__line"><strong>D. Listening:</strong> Fora do escopo</div>
+        <div class="price-card__line"><strong>Total TGT:</strong> 125h/mês</div>
+        <div class="price-card__line"><strong style="color: var(--c-warning);">Margem real:</strong> success subsidia o time</div>
+      </div>
+
+      <div class="price-card price-card--featured">
+        <div class="price-card__badge">PROPOSTA</div>
+        <div class="price-card__label">CENÁRIO TGT</div>
+        <h3 class="price-card__title">Novo Fee</h3>
+        <div class="price-card__num">R$ 10,25K<small>/mês bruto</small></div>
+        <div class="small text-cool" style="margin-bottom: var(--s-3);">R$ 7,8K líquido · + success fee mantido</div>
+        <div class="price-card__line"><strong>Account:</strong> 60h <span class="text-success mono">+10h</span></div>
+        <div class="price-card__line"><strong>Sr Designer:</strong> 90h <span class="text-success mono">+25h</span></div>
+        <div class="price-card__line"><strong>Jr Designer:</strong> 140h <span class="text-success mono">NOVO</span></div>
+        <div class="price-card__line"><strong>Videomaker:</strong> 40h <span class="text-success mono">NOVO</span></div>
+        <div class="price-card__line"><strong>Conteúdo:</strong> <span class="text-success">Incluso</span></div>
+        <div class="price-card__line"><strong>D. Listening:</strong> <span class="text-success">Incluso</span></div>
+        <div class="price-card__line"><strong>Total TGT:</strong> 330h/mês <span class="text-success mono">2,64×</span></div>
+        <div class="price-card__line"><strong style="color: var(--c-success);">Margem saudável:</strong> fee cobre operação</div>
+      </div>
+
+      <div class="price-card">
+        <div class="price-card__label">REFERÊNCIA · PLANO ORIGINAL</div>
+        <h3 class="price-card__title">Slide 26</h3>
+        <div class="price-card__num">R$ 20K<small>/mês total</small></div>
+        <div class="small text-cool" style="margin-bottom: var(--s-3);">Linha "Agência de marketing (fee)"</div>
+        <div class="price-card__line"><strong>Item:</strong> Agência de marketing</div>
+        <div class="price-card__line"><strong>Custo mensal previsto:</strong> R$ 20.000</div>
+        <div class="price-card__line"><strong>Total 8 meses:</strong> R$ 160.000</div>
+        <div class="price-card__line"><strong>Financiamento:</strong> Gamer Hut</div>
+        <div class="price-card__line" style="margin-top: var(--s-2);">
+          <strong style="color: var(--c-orange);">Match TGT:</strong> 10,25K fee + 11K success ≈ <strong>R$ 21,25K</strong>
+        </div>
+        <div class="price-card__line" style="color: var(--c-success);">
+          <strong>Resultado:</strong> dentro do orçamento que o plano já validou
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--success" style="margin-top: var(--s-5);">
+      <div class="callout__label">RESUMO DO FEE</div>
+      <div class="callout__text">
+        FEE TGT SOBE <em>R$ 2,7K BRUTO</em> · CUSTO TOTAL DE MARKETING DO CLIENTE
+        CAI <em>R$ 750/MÊS</em> · CAPACITY MULTIPLICA POR <em>2,64×.</em>
+      </div>
+      <div class="callout__sub">
+        Não é negociação de fee — é reorganização de modelo. A TGT internaliza serviços que estavam
+        fragmentados em fornecedores externos, ganha eficiência operacional, melhora margem,
+        e o cliente recebe mais e paga menos no consolidado. A conversa com a Gamer Hut deve focar
+        nesse <strong>recorte de custo total</strong>, não no incremento isolado do fee.
+      </div>
+    </div>
+
+    <h3 class="arcade text-orange" style="font-size: 11px; margin-top: var(--s-6); margin-bottom: var(--s-3);">
+      ◢ ECONOMICS · CUSTO POR HORA DE OPERAÇÃO
+    </h3>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Cenário</th>
+              <th>Fee bruto</th>
+              <th>Custo total mkt</th>
+              <th>Horas TGT/mês</th>
+              <th>Custo/hora (fee bruto)</th>
+              <th>Custo/hora (custo total)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hoje</td>
+              <td class="mono">R$ 6.800</td>
+              <td class="mono">R$ 11.000</td>
+              <td class="mono">125h</td>
+              <td class="mono">R$ 54,4/h</td>
+              <td class="mono">R$ 88,0/h</td>
+            </tr>
+            <tr>
+              <td>Proposto TGT</td>
+              <td class="mono"><strong class="text-orange">R$ 10.250</strong></td>
+              <td class="mono"><strong class="text-success">R$ 10.250</strong></td>
+              <td class="mono"><strong class="text-orange">330h</strong></td>
+              <td class="mono"><strong class="text-success">R$ 31,1/h</strong></td>
+              <td class="mono"><strong class="text-success">R$ 31,1/h</strong></td>
+            </tr>
+            <tr style="background: rgba(74,222,128,.05);">
+              <td><strong>Variação</strong></td>
+              <td class="mono"><strong>+51%</strong></td>
+              <td class="mono"><strong class="text-success">−7%</strong></td>
+              <td class="mono"><strong class="text-orange">+164%</strong></td>
+              <td class="mono"><strong class="text-success">−43%</strong></td>
+              <td class="mono"><strong class="text-success">−65%</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small text-cool mt-2">
+        <strong class="text-skin">Leitura:</strong> com o novo modelo, cada hora de operação para o cliente fica
+        <strong class="text-success">~2,8× mais barata</strong> em termos de custo total — porque a agência consegue diluir o custo do
+        Sr/Account em mais entregas, o Jr/Videomaker entram com produtividade alta, e os
+        serviços terceirizados (conteúdo + listening) são internalizados sem custo extra.
+        <strong>É win-win:</strong> TGT melhora margem, GH ganha 205h/mês de capacity adicional pagando R$ 750 a menos.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 08 — ROADMAP
+========================================= -->
+<section class="stage stage--alt" id="roadmap">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 08 · ROADMAP MAI–DEZ 2026</div>
+      <h2 class="stage__title">QUARTERS, <em>NÃO MILESTONES SOLTOS</em></h2>
+      <p class="stage__sub">
+        Em vez de cronograma de 30 ações soltas (que ninguém consegue rastrear),
+        organizamos em 4 quarters com tema claro. Cada quarter tem 3–5 entregas-chave.
+        Roadmap fica fácil de ler, fácil de cobrar, fácil de comemorar.
+      </p>
+    </div>
+
+    <div class="roadmap">
+      <div class="roadmap__col">
+        <div class="roadmap__period">Q2 · MAI–JUN</div>
+        <h3 class="roadmap__title">Fundação</h3>
+        <ul class="roadmap__list">
+          <li>Brandbook v.2026.07 ativado em 100% das peças</li>
+          <li>Templates Figma replicáveis (Jr produtivo)</li>
+          <li>Monday.com como sistema de aprovação</li>
+          <li>Pitch deck publisher v1 (PT)</li>
+          <li>Identidade Gamer Shack (esboço)</li>
+          <li><strong>KPI:</strong> Engajamento IG 0,31% → 0,8%</li>
+        </ul>
+      </div>
+
+      <div class="roadmap__col">
+        <div class="roadmap__period">Q3 · JUL–AGO</div>
+        <h3 class="roadmap__title">Decolagem</h3>
+        <ul class="roadmap__list">
+          <li>Piloto Fluffy &amp; Grumpy (1ª temporada · 8 eps)</li>
+          <li>Sonic logo Gamer Hut entregue</li>
+          <li>1ª reunião de pitch com publisher</li>
+          <li>Loja própria como % &gt; 8% (vs 14% hoje)</li>
+          <li>TikTok Store ativo + Discord Shack</li>
+          <li><strong>KPI:</strong> IG 130K · Eng 1,2% · 1 publisher em fase de proposta</li>
+        </ul>
+      </div>
+
+      <div class="roadmap__col">
+        <div class="roadmap__period">Q4-A · SET–OUT</div>
+        <h3 class="roadmap__title">Aceleração</h3>
+        <ul class="roadmap__list">
+          <li>BGS 2026 — estande GH com Fluffy &amp; Grumpy ao vivo</li>
+          <li>1º contrato BRONZE assinado</li>
+          <li>Campanha co-marketing (Sony · Nintendo · ou 3rd party)</li>
+          <li>Dashboard PowerBI live para publisher</li>
+          <li>Hut Gold (programa fidelidade) lançado</li>
+          <li><strong>KPI:</strong> IG 175K · Eng 1,6% · 2 publishers ativos</li>
+        </ul>
+      </div>
+
+      <div class="roadmap__col">
+        <div class="roadmap__period">Q4-B · NOV–DEZ</div>
+        <h3 class="roadmap__title">Capitalização</h3>
+        <ul class="roadmap__list">
+          <li>Mega campanha Black Friday (paid maximizado)</li>
+          <li>CCXP 2026 — cobertura Shack ao vivo</li>
+          <li>The Game Awards · live de reação</li>
+          <li>Kit Natal Gamer + Cyber Monday</li>
+          <li>Fechamento 2026 + plano 2027 entregue até 15/Dez</li>
+          <li><strong>KPI:</strong> IG 200–220K · Eng 1,8% · 3–4 publishers · 14% loja própria</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     STAGE 09 — PRÓXIMOS PASSOS
+========================================= -->
+<section class="stage" id="next">
+  <div class="container">
+    <div class="stage__head">
+      <div class="stage__num">STAGE 09 · PRÓXIMOS PASSOS</div>
+      <h2 class="stage__title">AÇÃO IMEDIATA · <em>30 DIAS</em></h2>
+      <p class="stage__sub">
+        O que acontece a partir do "sim" do cliente. Cronograma corrigido (sem datas de Abril
+        que já passaram). Tudo na sequência que faz sentido — não item solto.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Quando</th>
+              <th>Ação</th>
+              <th>Responsável</th>
+              <th>Output</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong class="text-orange">Sem 1 · Mai</strong></td>
+              <td>Apresentação do Plano TGT + Brandbook ao cliente</td>
+              <td>TGT (Account + Sr)</td>
+              <td>Aprovação do plano + escopo</td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">Sem 1 · Mai</strong></td>
+              <td>Aprovação contratual do novo modelo (R$ 10,25K bruto · custo total marketing −R$ 750)</td>
+              <td>TGT Comercial × GH</td>
+              <td>Aditivo contratual</td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">Sem 2 · Mai</strong></td>
+              <td>Onboarding do Designer Jr + Videomaker</td>
+              <td>TGT Operações</td>
+              <td>Time completo no Monday</td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">Sem 2 · Mai</strong></td>
+              <td>Setup Monday.com + templates de briefing</td>
+              <td>Account</td>
+              <td>Sistema operando</td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">Sem 3 · Mai</strong></td>
+              <td>Calibração final do feed atual + plano de transição</td>
+              <td>Senior</td>
+              <td>Documento de transição</td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">Sem 3 · Mai</strong></td>
+              <td>Setup analytics &amp; tracking (UTM, pixel, cupom rastreável)</td>
+              <td>Account + Senior</td>
+              <td>Dashboard inicial</td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">Sem 4 · Mai</strong></td>
+              <td>Lançamento do novo padrão de feed Store</td>
+              <td>Senior + Jr</td>
+              <td>Primeira semana com novo feed</td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">Sem 4 · Mai</strong></td>
+              <td>Conta @gamershack criada + landing de teaser</td>
+              <td>Senior + Account</td>
+              <td>Conta ativa + 1 post manifesto</td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">Sem 4 · Mai</strong></td>
+              <td>Pitch deck publisher v1 finalizado</td>
+              <td>Account + Senior</td>
+              <td>PDF + Keynote em PT</td>
+            </tr>
+            <tr style="background: rgba(242,102,65,.06);">
+              <td><strong class="text-orange">Início Jun</strong></td>
+              <td><strong>Primeiro war room quinzenal GH × TGT</strong></td>
+              <td>Account + GH</td>
+              <td>Cadência operacional ativa</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid grid-3 mt-5">
+      <div class="card">
+        <div class="card__eyebrow">RISCO 01 · ADESÃO</div>
+        <h4 class="card__title" style="font-size: 18px;">Cliente não aprovar o fee</h4>
+        <p class="card__body small">
+          <strong>Mitigação:</strong> apresentar o orçamento de R$ 20K/mês de agência do plano original em paralelo. TGT está
+          dentro desse orçamento já validado. A conversa fica <strong>"como reorganizar o que já se paga"</strong>, não "se aprova fee novo".
+        </p>
+      </div>
+      <div class="card">
+        <div class="card__eyebrow">RISCO 02 · CAPACITY</div>
+        <h4 class="card__title" style="font-size: 18px;">Demanda viral surpresa</h4>
+        <p class="card__body small">
+          <strong>Mitigação:</strong> 30h/mês reservadas para extraordinário (Cat A + B). Se passar disso,
+          aciona valor-hora. Sem surpresa de orçamento, sem queda na rotina.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card__eyebrow">RISCO 03 · KPI</div>
+        <h4 class="card__title" style="font-size: 18px;">Cliente cobra meta original</h4>
+        <p class="card__body small">
+          <strong>Mitigação:</strong> documento de calibragem (este HTML) entra como anexo do contrato.
+          Métricas TGT viram acordo formal, com racional explícito de cada ajuste. Histórico fica registrado
+          e mostra o cuidado com cada ambição.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div>
+        <h3 class="footer__title">PRESS START. <em>LET THE GAMES BEGIN.</em></h3>
+        <p class="footer__lead">
+          Plano de ação executivo construído em parceria — preservando as bases do plano original,
+          calibrando KPIs para a realidade da operação, e estruturando o time pra entregar
+          até dezembro.
+        </p>
+        <div style="margin-top: var(--s-3);">
+          <span class="tag tag--orange">CONFIDENCIAL</span>
+          <span class="tag tag--info" style="margin-left: 8px;">v.2026.05.08</span>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer__col-title">DOCUMENTO</h4>
+        <ul class="footer__list">
+          <li>9 Stages · 1 com calibração</li>
+          <li>5 frentes de ação</li>
+          <li>2 fluxos operacionais</li>
+          <li>4 quarters mapeados</li>
+          <li>Dados Fev–Mai/26 auditados</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer__col-title">PRÓXIMO PASSO</h4>
+        <ul class="footer__list">
+          <li>Apresentação ao cliente</li>
+          <li>Aprovação do plano</li>
+          <li>Aditivo contratual</li>
+          <li>Setup operacional</li>
+          <li>Sprint 1 ativa</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div>
+        © 2026 GAMER HUT × <span class="footer__tgt">TGT STRATEGY MKT</span> — A AGÊNCIA ALÉM DO MARKETING
+      </div>
+      <div>
+        MÍDIA FÍSICA NEVER DIES ◢
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll spy simples para HUD nav
+  const sections = document.querySelectorAll('.stage[id]');
+  const navLinks = document.querySelectorAll('.hud__nav a');
+
+  function onScroll() {
+    const scrollPos = window.scrollY + 100;
+    let current = '';
+    sections.forEach(sec => {
+      if (sec.offsetTop <= scrollPos) current = sec.id;
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+
+    // Lifebar dinâmica baseada em progresso de scroll
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = Math.min(100, (window.scrollY / docHeight) * 100);
+    const lifebar = document.querySelector('.hud__lifebar-fill');
+    if (lifebar) lifebar.style.width = (100 - progress * 0.4) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+</body>
+</html>
